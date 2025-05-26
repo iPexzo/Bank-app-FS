@@ -13,15 +13,33 @@ const register = async (userInfo: UserInfo, image: string) => {
     uri: image,
     type: "image/jpeg",
   } as any);
-  const { data } = await instance.post("/auth/register", formData);
-  await storeToken(data.token);
-  return data;
+  try {
+    console.log("FormateData Image", image);
+    console.log("FormateData", userInfo);
+    const { data } = await instance.post(
+      "/mini-project/api/auth/register",
+      formData
+    );
+
+    // await storeToken(data.token);
+    return data;
+  } catch (error) {
+    console.log("register api", error);
+  }
 };
 
 const login = async (userInfo: UserInfo) => {
-  const { data } = await instance.post("/auth/login", userInfo);
-  await storeToken(data.token);
-  return data;
+  try {
+    const { data } = await instance.post(
+      "/mini-project/api/auth/login",
+      userInfo
+    );
+    console.log("check token :", data.token);
+    await storeToken(data.token);
+    return data;
+  } catch (error) {
+    console.log("Login api", error);
+  }
 };
 
-export { register, login };
+export { login, register };

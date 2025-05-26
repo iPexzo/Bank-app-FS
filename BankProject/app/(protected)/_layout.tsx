@@ -1,7 +1,7 @@
-import { StyleSheet, Text, View } from "react-native";
-import React, { useContext } from "react";
-import { Redirect, Stack } from "expo-router";
 import AuthContext from "@/context/AuthContext";
+import { Redirect, Stack } from "expo-router";
+import React, { useContext } from "react";
+import { StyleSheet } from "react-native";
 
 const ProtectedLayout = () => {
   const { isAuthenticated } = useContext(AuthContext);
@@ -9,8 +9,8 @@ const ProtectedLayout = () => {
     return <Redirect href="/Login" />;
   }
   return (
-    <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="(tabs)" />
+    <Stack screenOptions={{ headerTitleAlign: "center" }}>
+      <Stack.Screen name="(tabs)" options={{ title: "Home" }} />
     </Stack>
   );
 };
@@ -18,3 +18,4 @@ const ProtectedLayout = () => {
 export default ProtectedLayout;
 
 const styles = StyleSheet.create({});
+// headerStyle: { backgroundColor: "black" },

@@ -1,8 +1,8 @@
-import { Stack } from "expo-router";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import AuthContext from "@/context/AuthContext";
-import { useEffect, useState } from "react";
 import { getToken } from "@/api/storage";
+import AuthContext from "@/context/AuthContext";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Stack } from "expo-router";
+import { useEffect, useState } from "react";
 import { Text, View } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 

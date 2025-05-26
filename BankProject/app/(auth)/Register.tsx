@@ -1,11 +1,17 @@
-import { StyleSheet, Text, View, TextInput, Image } from "react-native";
-import React, { useContext, useState } from "react";
-import { TouchableOpacity } from "react-native";
-import * as ImagePicker from "expo-image-picker";
-import { useMutation } from "@tanstack/react-query";
 import { register } from "@/api/auth";
 import AuthContext from "@/context/AuthContext";
+import { useMutation } from "@tanstack/react-query";
+import * as ImagePicker from "expo-image-picker";
 import { useRouter } from "expo-router";
+import React, { useContext, useState } from "react";
+import {
+  Image,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 const Register = () => {
   const [image, setImage] = useState<string | null>(null);
@@ -18,12 +24,12 @@ const Register = () => {
     mutationKey: ["RegisterFn"],
     mutationFn: () => register({ userName, password }, image || ""),
     onSuccess: () => {
-      setIsAuthenticated(true);
+      // setIsAuthenticated(true);
       alert("Registered Successfully");
       router.replace("/Login");
     },
-    onError: () => {
-      alert("Registered unSuccessfully");
+    onError: (error) => {
+      console.log("Register error", error.message);
     },
   });
 

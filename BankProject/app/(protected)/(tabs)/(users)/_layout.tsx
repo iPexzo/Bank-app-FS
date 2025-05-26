@@ -2,14 +2,14 @@ import { Stack } from "expo-router";
 import React from "react";
 import { StyleSheet } from "react-native";
 
-const HOmePAge = () => {
+const UsersLayout = () => {
   return (
     <Stack>
-      <Stack.Screen name="index" options={{ headerShown: false }} />
+      <Stack.Screen name="Allusers" options={{ headerShown: false }} />
     </Stack>
   );
 };
 
-export default HOmePAge;
+export default UsersLayout;
 
 const styles = StyleSheet.create({});

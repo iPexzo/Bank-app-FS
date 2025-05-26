@@ -1,3 +1,8 @@
+import { login } from "@/api/auth";
+import AuthContext from "@/context/AuthContext";
+import { useMutation } from "@tanstack/react-query";
+import { Link, useRouter } from "expo-router";
+import React, { useContext, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -5,12 +10,6 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useContext, useState } from "react";
-import { useMutation } from "@tanstack/react-query";
-import { login } from "@/api/auth";
-import AuthContext from "@/context/AuthContext";
-import { useRouter } from "expo-router";
-import { Link } from "expo-router";
 
 const Login = () => {
   const [userName, setUserName] = useState("");
@@ -22,6 +21,11 @@ const Login = () => {
     mutationKey: ["LoginFn"],
     mutationFn: () => login({ userName, password }),
     onSuccess: () => {
+      console.log("i am here ");
+      if (!userName && !password) {
+        alert("Username and Passowrd are requried!");
+      }
+
       alert("Logged in Successfu]");
       setIsAuthenticated(true);
       router.replace("/");

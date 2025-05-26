@@ -2,14 +2,14 @@ import { Stack } from "expo-router";
 import React from "react";
 import { StyleSheet } from "react-native";
 
-const HOmePAge = () => {
+const MYProfileLayout = () => {
   return (
     <Stack>
-      <Stack.Screen name="index" options={{ headerShown: false }} />
+      <Stack.Screen name="MyProfile" options={{ headerShown: false }} />
     </Stack>
   );
 };
 
-export default HOmePAge;
+export default MYProfileLayout;
 
 const styles = StyleSheet.create({});

@@ -2,35 +2,22 @@ import { getAllUsers } from "@/api/users";
 import { useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
-// import { users } from "@/app/data/users";
 
-const UsersScreen = () => {
+const MyProfile = () => {
   const [allUsers, setAllUsers] = useState("");
   const { data, isFetching, isSuccess } = useQuery({
     queryKey: ["getallusers"],
     queryFn: () => getAllUsers(),
   });
 
-  console.log("Fetching all users...", data);
-
   if (isFetching) return <Text>Loading...</Text>;
   return (
     <View>
-      {isSuccess &&
-        data?.map((user: any) => <Text key={user.id}>{user.name}</Text>)}
+      {/* {isSuccess &&
+        data?.map((user: any) => <Text key={user.id}>{user?.username}</Text>)} */}
     </View>
   );
 };
-
-export default UsersScreen;
+export default MyProfile;
 
 const styles = StyleSheet.create({});
-
-{
-  /* <Button
-        title="Transfer"
-        onPress={() => {
-          alert("Clicked");
-        }}
-      /> */
-}

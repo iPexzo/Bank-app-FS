@@ -1,12 +1,14 @@
 import instance from ".";
 
 const getAllUsers = async () => {
-  const { data } = await instance.get("users");
+  const { data } = await instance.get("/mini-project/api/auth/users");
   return data;
 };
 
 const updateUsers = async (userId: string) => {
-  const { data } = await instance.put(`users/${userId}/updateusers`);
+  const { data } = await instance.put(
+    `/mini-project/api/auth/profile/${userId}/updateusers`
+  );
   return data;
 };
 
@@ -20,4 +22,4 @@ const my = async () => {
   return data;
 };
 
-export { getAllUsers, updateUsers, me, my };
+export { getAllUsers, me, my, updateUsers };
