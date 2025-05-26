@@ -13,13 +13,27 @@ const updateUsers = async (userId: string) => {
 };
 
 const me = async () => {
-  const { data } = await instance.get("/auth/me");
+  const { data } = await instance.get("/mini-project/api/auth/me");
   return data;
 };
 
 const my = async () => {
-  const { data } = await instance.get("/transactions/my");
+  const { data } = await instance.get("/mini-project/api/transactions/my");
   return data;
 };
 
-export { getAllUsers, me, my, updateUsers };
+const deposit = async () => {
+  const { data } = await instance.post(
+    "/mini-project/api/transactions/deposit"
+  );
+  return data;
+};
+
+const withdraw = async () => {
+  const { data } = await instance.post(
+    "/mini-project/api/transactions/withdraw"
+  );
+  return data;
+};
+
+export { getAllUsers, me, my, updateUsers, deposit, withdraw };

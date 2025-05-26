@@ -169,7 +169,7 @@ export default function Index() {
 
       {/* Last Transactions */}
       <View>
-        <Link href={"/users/users"} asChild>
+        <Link href={"/Transactions"} asChild>
           <TouchableOpacity>
             <Text
               style={{

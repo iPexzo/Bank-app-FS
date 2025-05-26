@@ -1,23 +1,168 @@
 import { getAllUsers } from "@/api/users";
+
+import { useLocalSearchParams, useRouter } from "expo-router";
+import React, { useContext, useState } from "react";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+
+// const MyProfile = () => {
+//   const [allUsers, setAllUsers] = useState("");
+//   const { data, isFetching, isSuccess } = useQuery({
+//     queryKey: ["getallusers"],
+//     queryFn: () => getAllUsers(),
+//   });
+
+//   if (isFetching) return <Text>Loading...</Text>;
+//   return (
+//     <View>
+//       {/* {isSuccess &&
+//         data?.map((user: any) => <Text key={user.id}>{user?.username}</Text>)} */}
+//     </View>
+//   );
+// };
+// export default MyProfile;
+
+// const styles = StyleSheet.create({});
+// const MyProfile = () => {
+//   const { userid } = useLocalSearchParams();
+//   const user = .find((item) => item.id === Number(userid));
+//   return (
+//     <View
+//       style={{
+//         padding: 20,
+//         flex: 1,
+//         alignItems: "center",
+//         justifyContent: "center",
+//       }}
+//     >
+//       <Image
+//         source={{ uri: user?.image }}
+//         style={{
+//           width: 300,
+//           height: 300,
+//           borderRadius: 30,
+//           marginRight: 15,
+//           borderWidth: 2,
+//         }}
+//       />
+//       <Text>{user?.name}</Text>
+//       <Text>{user?.email}</Text>
+//       <Text>{user?.salary} KWD</Text>
+//     </View>
+//   );
+// };
+
+// export default MyProfile;
+
+// const styles = StyleSheet.create({});
 import { useQuery } from "@tanstack/react-query";
-import React, { useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
-
-const MyProfile = () => {
-  const [allUsers, setAllUsers] = useState("");
-  const { data, isFetching, isSuccess } = useQuery({
-    queryKey: ["getallusers"],
-    queryFn: () => getAllUsers(),
+import { me } from "@/api/users";
+import { userscard } from "@/data/usersdata";
+import AuthContext from "@/context/AuthContext";
+import { deleteToken } from "@/api/storage";
+const MyProfileScreen = () => {
+  const router = useRouter();
+  const { setIsAuthenticated } = useContext(AuthContext);
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["me"],
+    queryFn: () => me(),
   });
-
-  if (isFetching) return <Text>Loading...</Text>;
+  if (isLoading) {
+    return <Text>Loading...</Text>;
+  }
   return (
-    <View>
-      {/* {isSuccess &&
-        data?.map((user: any) => <Text key={user.id}>{user?.username}</Text>)} */}
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: "#004d40",
+        paddingHorizontal: 20,
+        paddingTop: 60,
+      }}
+    >
+      <Text
+        style={{
+          fontSize: 22,
+          fontWeight: "bold",
+          color: "#fff",
+          alignSelf: "center",
+          marginBottom: 20,
+        }}
+      >
+        Home
+      </Text>
+
+      <View
+        style={{
+          backgroundColor: "#002D62",
+          borderRadius: 15,
+          padding: 20,
+          alignItems: "center",
+          marginBottom: 30,
+        }}
+      >
+        <Image
+          source={{
+            uri: "",
+          }}
+          style={{ width: 70, height: 70, borderRadius: 35, marginBottom: 10 }}
+        />
+        <Text style={{ color: "#fff", fontSize: 20, fontWeight: "bold" }}>
+          Abdulaziz
+        </Text>
+        <Text style={{ color: "#ccc", fontSize: 14, marginBottom: 10 }}>
+          Email
+        </Text>
+        <Text style={{ color: "#00e676", fontSize: 18, fontWeight: "bold" }}>
+          33242 KWD
+        </Text>
+      </View>
+
+      <View>
+        <TouchableOpacity
+          style={{
+            backgroundColor: "#1e88e5",
+            padding: 15,
+            borderRadius: 10,
+            marginBottom: 15,
+          }}
+        >
+          <Text
+            style={{ color: "#fff", textAlign: "center", fontWeight: "bold" }}
+          >
+            Edit Profile
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            backgroundColor: "#1e88e5",
+            padding: 15,
+            borderRadius: 10,
+            marginBottom: 15,
+          }}
+        >
+          <Text
+            style={{ color: "#fff", textAlign: "center", fontWeight: "bold" }}
+          >
+            Change Password
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{ backgroundColor: "#e53935", padding: 15, borderRadius: 10 }}
+          onPress={async () => {
+            await deleteToken();
+
+            setIsAuthenticated(false);
+            router.replace("/Login");
+          }}
+        >
+          <Text
+            style={{ color: "#fff", textAlign: "center", fontWeight: "bold" }}
+          >
+            Logout
+          </Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
-export default MyProfile;
 
-const styles = StyleSheet.create({});
+export default MyProfileScreen;
