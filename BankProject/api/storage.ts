@@ -13,6 +13,7 @@ const getToken = async () => {
     return token;
   } catch (error) {
     console.error("Error getting token", error);
+    return null;
   }
 };
 const deleteToken = async () => {

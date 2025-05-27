@@ -1,39 +1,40 @@
 import instance from ".";
 
 const getAllUsers = async () => {
-  const { data } = await instance.get("/mini-project/api/auth/users");
+  const { data } = await instance.get("/auth/users");
   return data;
 };
 
-const updateUsers = async (userId: string) => {
+const updateUsers = async (userId: string, body: { image: string }) => {
   const { data } = await instance.put(
-    `/mini-project/api/auth/profile/${userId}/updateusers`
+    `/auth/profile/${userId}/updateusers`,
+    body
   );
   return data;
 };
 
 const me = async () => {
-  const { data } = await instance.get("/mini-project/api/auth/me");
+  const { data } = await instance.get("/auth/me");
   return data;
 };
 
+const userId = async () => {
+  const { data } = await instance.get("/auth/userId");
+  return data;
+};
 const my = async () => {
-  const { data } = await instance.get("/mini-project/api/transactions/my");
+  const { data } = await instance.get("/transactions/my");
   return data;
 };
 
 const deposit = async () => {
-  const { data } = await instance.post(
-    "/mini-project/api/transactions/deposit"
-  );
+  const { data } = await instance.post("/transactions/deposit");
   return data;
 };
 
-const withdraw = async () => {
-  const { data } = await instance.post(
-    "/mini-project/api/transactions/withdraw"
-  );
+const withdraw = async (body: { amount: number }) => {
+  const { data } = await instance.post("/transactions/withdraw", body);
   return data;
 };
 
-export { getAllUsers, me, my, updateUsers, deposit, withdraw };
+export { getAllUsers, me, my, updateUsers, deposit, withdraw, userId };

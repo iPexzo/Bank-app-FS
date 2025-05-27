@@ -22,11 +22,11 @@ const Register = () => {
 
   const { mutate, data } = useMutation({
     mutationKey: ["RegisterFn"],
-    mutationFn: () => register({ userName, password }, image || ""),
+    mutationFn: () => register({ username: userName, password }, image || ""),
     onSuccess: () => {
-      // setIsAuthenticated(true);
+      setIsAuthenticated(true);
       alert("Registered Successfully");
-      router.replace("/Login");
+      router.replace("/");
     },
     onError: (error) => {
       console.log("Register error", error.message);

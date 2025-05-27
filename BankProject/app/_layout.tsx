@@ -1,5 +1,5 @@
-import { getToken } from "@/api/storage";
-import AuthContext from "@/context/AuthContext";
+import { deleteToken, getToken } from "@/api/storage";
+import AuthContext, { AuthProvider } from "@/context/AuthContext";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Stack } from "expo-router";
 import { useEffect, useState } from "react";
@@ -11,13 +11,19 @@ export default function RootLayout() {
   const [ready, setReady] = useState(false);
   const queryClient = new QueryClient();
 
+  const verifyToken = async () => {
+    const token = await getToken();
+    console.log(">>Retrieved Token", token);
+    // console.log(token);
+    if (token) {
+      setIsAuthenticated(true);
+    }
+    console.log("isAuth", isAuthenticated);
+    setReady(true);
+  };
+
   useEffect(() => {
-    const verifyToken = async () => {
-      const token = await getToken();
-      console.log(">>Retrieved Token", token);
-      setIsAuthenticated(token ? true : false);
-      setReady(true);
-    };
+    deleteToken();
     verifyToken();
   }, []);
 
@@ -29,17 +35,13 @@ export default function RootLayout() {
     );
   }
   return (
-    <SafeAreaProvider>
-      <SafeAreaView style={{ flex: 1 }}>
-        <QueryClientProvider client={queryClient}>
-          <AuthContext.Provider value={{ isAuthenticated, setIsAuthenticated }}>
-            <Stack screenOptions={{ headerShown: false }}>
-              <Stack.Screen name="(auth)" />
-              <Stack.Screen name="(tabs)" />
-            </Stack>
-          </AuthContext.Provider>
-        </QueryClientProvider>
-      </SafeAreaView>
-    </SafeAreaProvider>
+    <AuthContext.Provider value={{ isAuthenticated, setIsAuthenticated }}>
+      <QueryClientProvider client={queryClient}>
+        <Stack screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="(auth)" />
+          <Stack.Screen name="(tabs)" />
+        </Stack>
+      </QueryClientProvider>
+    </AuthContext.Provider>
   );
 }

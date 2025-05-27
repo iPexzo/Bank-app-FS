@@ -1,8 +1,9 @@
 import { getAllUsers } from "@/api/users";
+import AuthContext from "@/context/AuthContext";
 import { userscard } from "@/data/usersdata";
 import { useQuery } from "@tanstack/react-query";
-import { Link } from "expo-router";
-import React, { useState } from "react";
+import { Link, useRouter } from "expo-router";
+import React, { useContext, useState } from "react";
 import {
   Image,
   ScrollView,
@@ -35,6 +36,20 @@ import {
 
 // const styles = StyleSheet.create({});
 const Allusers = () => {
+  const { setIsAuthenticated } = useContext(AuthContext);
+  const router = useRouter();
+
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["users"],
+    queryFn: () => getAllUsers(),
+  });
+  // console.log("HOME", data);
+
+  // console.log("profile", data);
+  if (isLoading) {
+    return <Text>Loading...</Text>;
+  }
+
   return (
     <View style={{ padding: 20, backgroundColor: "#2f4f4f", flex: 1 }}>
       <View>
@@ -50,9 +65,9 @@ const Allusers = () => {
         </Text>
       </View>
       <ScrollView>
-        {userscard.map((users) => (
+        {data.map((data: any) => (
           <View
-            key={users.id}
+            key={data?._id}
             style={{
               flexDirection: "row",
               backgroundColor: "#191970",
@@ -63,7 +78,7 @@ const Allusers = () => {
             }}
           >
             <Image
-              source={{ uri: users.image }}
+              source={{ uri: data?.image }}
               style={{
                 width: 55,
                 height: 55,
@@ -77,11 +92,11 @@ const Allusers = () => {
               <Text
                 style={{ color: "white", fontSize: 16, fontWeight: "bold" }}
               >
-                {users.name}
+                {data?.username}
               </Text>
-              <Text style={{ color: "#cdcdcd", fontSize: 13, marginTop: 2 }}>
-                {users.email}
-              </Text>
+              <Text
+                style={{ color: "#cdcdcd", fontSize: 13, marginTop: 2 }}
+              ></Text>
               <Text
                 style={{
                   color: "#32cd32",
@@ -90,9 +105,9 @@ const Allusers = () => {
                   marginTop: 5,
                 }}
               >
-                ${users.salary}
+                {data?.balance} KWD
               </Text>
-              <Link href={`/(users)/${users.id}`} asChild>
+              <Link href={`/(users)/${data?._id}`} asChild>
                 <TouchableOpacity
                   style={{
                     backgroundColor: "white",

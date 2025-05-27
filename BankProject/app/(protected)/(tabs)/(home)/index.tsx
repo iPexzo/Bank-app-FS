@@ -1,5 +1,8 @@
 import { deleteToken } from "@/api/storage";
+import { me, userId } from "@/api/users";
 import AuthContext from "@/context/AuthContext";
+import { userscard } from "@/data/usersdata";
+import { useQuery } from "@tanstack/react-query";
 import { Link, useRouter } from "expo-router";
 import { useContext } from "react";
 import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
@@ -7,12 +10,23 @@ import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 export default function Index() {
   const { setIsAuthenticated } = useContext(AuthContext);
   const router = useRouter();
+
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["me"],
+    queryFn: () => me(),
+  });
+
+  console.log("profileindex", data);
+  if (isLoading) {
+    return <Text>Loading...</Text>;
+  }
+
   return (
     <ScrollView style={{ flex: 1, backgroundColor: "#2f4f4f", padding: 20 }}>
       {/* Header */}
       <TouchableOpacity
-        onPress={async () => {
-          await deleteToken();
+        onPress={() => {
+          deleteToken();
 
           setIsAuthenticated(false);
           router.replace("/Login");
@@ -37,7 +51,7 @@ export default function Index() {
       >
         <Image
           source={{
-            uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-fMXEWyzl7MNd3Q15JOeyzHxasfVIHK6K_A&s",
+            uri: data?.image,
           }}
           style={{
             width: 45,
@@ -52,7 +66,7 @@ export default function Index() {
         <View>
           <Text style={{ color: "white", fontSize: 14 }}>Welcome back,</Text>
           <Text style={{ color: "white", fontSize: 18, fontWeight: "bold" }}>
-            Abdulaziz
+            {data?.username}
           </Text>
         </View>
       </View>
@@ -73,7 +87,7 @@ export default function Index() {
             BankBoubyan
           </Text>
           <Text style={{ color: "white", fontSize: 26, fontWeight: "bold" }}>
-            $1,275.277
+            {data?.balance} KWD
           </Text>
           <View
             style={{
@@ -101,7 +115,7 @@ export default function Index() {
             BankBoubyan
           </Text>
           <Text style={{ color: "white", fontSize: 26, fontWeight: "bold" }}>
-            $10,850.33
+            {data?.balance}KWD
           </Text>
           <View
             style={{
@@ -169,7 +183,7 @@ export default function Index() {
 
       {/* Last Transactions */}
       <View>
-        <Link href={"/Transactions"} asChild>
+        <Link href={"/(users)/transaction1"} asChild>
           <TouchableOpacity>
             <Text
               style={{

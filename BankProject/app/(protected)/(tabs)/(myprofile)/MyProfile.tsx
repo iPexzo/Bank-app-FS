@@ -1,4 +1,4 @@
-import { getAllUsers } from "@/api/users";
+import { getAllUsers, updateUserImage } from "@/api/users";
 
 import { useLocalSearchParams, useRouter } from "expo-router";
 import React, { useContext, useState } from "react";
@@ -59,110 +59,125 @@ import { me } from "@/api/users";
 import { userscard } from "@/data/usersdata";
 import AuthContext from "@/context/AuthContext";
 import { deleteToken } from "@/api/storage";
+import * as ImagePicker from "expo-image-picker";
+import UserId from "../(users)/transaction1";
 const MyProfileScreen = () => {
   const router = useRouter();
   const { setIsAuthenticated } = useContext(AuthContext);
   const { data, isLoading, error } = useQuery({
-    queryKey: ["me"],
+    queryKey: ["Meee"],
     queryFn: () => me(),
   });
+
+  // console.log("profile", data);
   if (isLoading) {
     return <Text>Loading...</Text>;
   }
-  return (
-    <View
-      style={{
-        flex: 1,
-        backgroundColor: "#004d40",
-        paddingHorizontal: 20,
-        paddingTop: 60,
-      }}
-    >
-      <Text
-        style={{
-          fontSize: 22,
-          fontWeight: "bold",
-          color: "#fff",
-          alignSelf: "center",
-          marginBottom: 20,
-        }}
-      >
-        Home
-      </Text>
-
+  const MyProfile = () => {
+    return (
       <View
         style={{
-          backgroundColor: "#002D62",
-          borderRadius: 15,
-          padding: 20,
-          alignItems: "center",
-          marginBottom: 30,
+          flex: 1,
+          backgroundColor: "#004d40",
+          paddingHorizontal: 20,
+          paddingTop: 60,
         }}
       >
-        <Image
-          source={{
-            uri: "",
-          }}
-          style={{ width: 70, height: 70, borderRadius: 35, marginBottom: 10 }}
-        />
-        <Text style={{ color: "#fff", fontSize: 20, fontWeight: "bold" }}>
-          Abdulaziz
-        </Text>
-        <Text style={{ color: "#ccc", fontSize: 14, marginBottom: 10 }}>
-          Email
-        </Text>
-        <Text style={{ color: "#00e676", fontSize: 18, fontWeight: "bold" }}>
-          33242 KWD
-        </Text>
-      </View>
-
-      <View>
-        <TouchableOpacity
+        <Text
           style={{
-            backgroundColor: "#1e88e5",
-            padding: 15,
-            borderRadius: 10,
-            marginBottom: 15,
+            fontSize: 22,
+            fontWeight: "bold",
+            color: "#fff",
+            alignSelf: "center",
+            marginBottom: 20,
           }}
         >
-          <Text
-            style={{ color: "#fff", textAlign: "center", fontWeight: "bold" }}
-          >
-            Edit Profile
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{
-            backgroundColor: "#1e88e5",
-            padding: 15,
-            borderRadius: 10,
-            marginBottom: 15,
-          }}
-        >
-          <Text
-            style={{ color: "#fff", textAlign: "center", fontWeight: "bold" }}
-          >
-            Change Password
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{ backgroundColor: "#e53935", padding: 15, borderRadius: 10 }}
-          onPress={async () => {
-            await deleteToken();
+          Home
+        </Text>
 
-            setIsAuthenticated(false);
-            router.replace("/Login");
+        <View
+          style={{
+            backgroundColor: "#002D62",
+            borderRadius: 15,
+            padding: 20,
+            alignItems: "center",
+            marginBottom: 30,
           }}
         >
-          <Text
-            style={{ color: "#fff", textAlign: "center", fontWeight: "bold" }}
-          >
-            Logout
+          <Image
+            source={{
+              uri: data?.image,
+            }}
+            style={{
+              width: 100,
+              height: 100,
+              borderRadius: 35,
+              marginBottom: 10,
+              borderWidth: 2,
+            }}
+          />
+          <Text style={{ color: "#fff", fontSize: 20, fontWeight: "bold" }}>
+            {data?.username}
           </Text>
-        </TouchableOpacity>
+          <Text style={{ color: "#ccc", fontSize: 14, marginBottom: 10 }}>
+            Email
+          </Text>
+          <Text style={{ color: "#00e676", fontSize: 18, fontWeight: "bold" }}>
+            {data?.balance}
+          </Text>
+        </View>
+
+        <View>
+          <TouchableOpacity
+            style={{
+              backgroundColor: "#1e88e5",
+              padding: 15,
+              borderRadius: 10,
+              marginBottom: 15,
+            }}
+          >
+            <Text
+              style={{ color: "#fff", textAlign: "center", fontWeight: "bold" }}
+            >
+              Edit Profile
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{
+              backgroundColor: "#1e88e5",
+              padding: 15,
+              borderRadius: 10,
+              marginBottom: 15,
+            }}
+          >
+            <Text
+              style={{ color: "#fff", textAlign: "center", fontWeight: "bold" }}
+            >
+              Change Password
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{
+              backgroundColor: "#e53935",
+              padding: 15,
+              borderRadius: 10,
+            }}
+            onPress={() => {
+              deleteToken();
+
+              setIsAuthenticated(false);
+              router.replace("/Login");
+            }}
+          >
+            <Text
+              style={{ color: "#fff", textAlign: "center", fontWeight: "bold" }}
+            >
+              Logout
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
-  );
+    );
+  };
 };
-
 export default MyProfileScreen;

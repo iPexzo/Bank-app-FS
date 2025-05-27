@@ -5,40 +5,41 @@ import instance from ".";
 import { storeToken } from "./storage";
 
 const register = async (userInfo: UserInfo, image: string) => {
-  const formData = new FormData();
-  formData.append("email", userInfo.userName);
-  formData.append("password", userInfo.password);
-  formData.append("image", {
-    name: "image.jpg",
-    uri: image,
-    type: "image/jpeg",
-  } as any);
   try {
-    console.log("FormateData Image", image);
-    console.log("FormateData", userInfo);
-    const { data } = await instance.post(
-      "/mini-project/api/auth/register",
-      formData
-    );
+    console.log("USERINFO", userInfo);
+    const formData = new FormData();
+    formData.append("username", userInfo.username);
+    formData.append("password", userInfo.password);
 
-    // await storeToken(data.token);
-    return data;
+    formData.append("image", {
+      name: "profile.jpeg",
+      uri: image,
+      type: "image/jpeg",
+    } as any);
+
+    console.log("FormateData", formData);
+    const response = await instance.post("/auth/register", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+
+    console.log("Data from register", response);
+    await storeToken(response.data.token);
+    return response.data;
   } catch (error) {
     console.log("register api", error);
+    throw error;
   }
 };
 
 const login = async (userInfo: UserInfo) => {
   try {
-    const { data } = await instance.post(
-      "/mini-project/api/auth/login",
-      userInfo
-    );
-    console.log("check token :", data.token);
+    const { data } = await instance.post("/auth/login", userInfo);
+    console.log("check token DATA:", data);
     await storeToken(data.token);
     return data;
   } catch (error) {
     console.log("Login api", error);
+    throw error;
   }
 };
 

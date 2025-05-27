@@ -19,26 +19,27 @@ const Login = () => {
   const router = useRouter();
   const { mutate, isPending } = useMutation({
     mutationKey: ["LoginFn"],
-    mutationFn: () => login({ userName, password }),
-    onSuccess: () => {
-      console.log("i am here ");
-      if (!userName && !password) {
-        alert("Username and Passowrd are requried!");
-      }
-
-      alert("Logged in Successfu]");
+    mutationFn: () => login({ username: userName, password }),
+    onSuccess: (data) => {
+      console.log("i am here,  ", data);
+      alert("Logged in Successfully");
       setIsAuthenticated(true);
       router.replace("/");
     },
     onError: (error) => {
       console.log("Login error", error);
       alert(" No Accounts, Need to Register");
+      router.replace("/Register");
     },
   });
 
   const handleLogin = () => {
     console.log("Login button pressed");
-    mutate();
+    if (!userName && !password) {
+      alert("Username and Passowrd are requried!");
+    } else {
+      mutate();
+    }
   };
   return (
     <View
