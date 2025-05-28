@@ -69,115 +69,115 @@ const MyProfileScreen = () => {
     queryFn: () => me(),
   });
 
-  // console.log("profile", data);
+  console.log("profile", data);
   if (isLoading) {
     return <Text>Loading...</Text>;
   }
-  const MyProfile = () => {
-    return (
-      <View
+
+  return (
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: "#004d40",
+        paddingHorizontal: 20,
+        paddingTop: 60,
+      }}
+    >
+      <Text
         style={{
-          flex: 1,
-          backgroundColor: "#004d40",
-          paddingHorizontal: 20,
-          paddingTop: 60,
+          fontSize: 22,
+          fontWeight: "bold",
+          color: "#fff",
+          alignSelf: "center",
+          marginBottom: 20,
         }}
       >
-        <Text
-          style={{
-            fontSize: 22,
-            fontWeight: "bold",
-            color: "#fff",
-            alignSelf: "center",
-            marginBottom: 20,
+        Home
+      </Text>
+
+      <View
+        style={{
+          backgroundColor: "#002D62",
+          borderRadius: 15,
+          padding: 20,
+          alignItems: "center",
+          marginBottom: 30,
+        }}
+      >
+        <Image
+          source={{
+            uri: data?.image,
           }}
-        >
-          Home
+          style={{
+            width: 100,
+            height: 100,
+            borderRadius: 35,
+            marginBottom: 10,
+            borderWidth: 2,
+          }}
+        />
+        <Text style={{ color: "#fff", fontSize: 20, fontWeight: "bold" }}>
+          {data?.username}
         </Text>
+        <Text style={{ color: "#ccc", fontSize: 14, marginBottom: 10 }}>
+          Email
+        </Text>
+        <Text style={{ color: "#00e676", fontSize: 18, fontWeight: "bold" }}>
+          {data?.balance}
+        </Text>
+      </View>
 
-        <View
+      <View>
+        <TouchableOpacity
           style={{
-            backgroundColor: "#002D62",
-            borderRadius: 15,
-            padding: 20,
-            alignItems: "center",
-            marginBottom: 30,
+            backgroundColor: "#1e88e5",
+            padding: 15,
+            borderRadius: 10,
+            marginBottom: 15,
           }}
         >
-          <Image
-            source={{
-              uri: data?.image,
-            }}
-            style={{
-              width: 100,
-              height: 100,
-              borderRadius: 35,
-              marginBottom: 10,
-              borderWidth: 2,
-            }}
-          />
-          <Text style={{ color: "#fff", fontSize: 20, fontWeight: "bold" }}>
-            {data?.username}
+          <Text
+            style={{ color: "#fff", textAlign: "center", fontWeight: "bold" }}
+          >
+            Edit Profile
           </Text>
-          <Text style={{ color: "#ccc", fontSize: 14, marginBottom: 10 }}>
-            Email
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            backgroundColor: "#1e88e5",
+            padding: 15,
+            borderRadius: 10,
+            marginBottom: 15,
+          }}
+        >
+          <Text
+            style={{ color: "#fff", textAlign: "center", fontWeight: "bold" }}
+          >
+            Change Password
           </Text>
-          <Text style={{ color: "#00e676", fontSize: 18, fontWeight: "bold" }}>
-            {data?.balance}
-          </Text>
-        </View>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            backgroundColor: "#e53935",
+            padding: 15,
+            borderRadius: 10,
+          }}
+          onPress={() => {
+            deleteToken();
 
-        <View>
-          <TouchableOpacity
-            style={{
-              backgroundColor: "#1e88e5",
-              padding: 15,
-              borderRadius: 10,
-              marginBottom: 15,
-            }}
+            setIsAuthenticated(false);
+            router.replace("/Login");
+          }}
+        >
+          <Text
+            style={{ color: "#fff", textAlign: "center", fontWeight: "bold" }}
           >
-            <Text
-              style={{ color: "#fff", textAlign: "center", fontWeight: "bold" }}
-            >
-              Edit Profile
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{
-              backgroundColor: "#1e88e5",
-              padding: 15,
-              borderRadius: 10,
-              marginBottom: 15,
-            }}
-          >
-            <Text
-              style={{ color: "#fff", textAlign: "center", fontWeight: "bold" }}
-            >
-              Change Password
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{
-              backgroundColor: "#e53935",
-              padding: 15,
-              borderRadius: 10,
-            }}
-            onPress={() => {
-              deleteToken();
-
-              setIsAuthenticated(false);
-              router.replace("/Login");
-            }}
-          >
-            <Text
-              style={{ color: "#fff", textAlign: "center", fontWeight: "bold" }}
-            >
-              Logout
-            </Text>
-          </TouchableOpacity>
-        </View>
+            Logout
+          </Text>
+        </TouchableOpacity>
       </View>
-    );
-  };
+    </View>
+  );
 };
+
 export default MyProfileScreen;

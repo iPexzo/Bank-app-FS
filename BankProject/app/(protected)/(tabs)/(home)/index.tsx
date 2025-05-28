@@ -27,7 +27,6 @@ export default function Index() {
       <TouchableOpacity
         onPress={() => {
           deleteToken();
-
           setIsAuthenticated(false);
           router.replace("/Login");
         }}
@@ -139,7 +138,7 @@ export default function Index() {
           marginVertical: 30,
         }}
       >
-        <Link href={"/(users)/Allusers"} asChild>
+        <Link href={"/Allusers"} asChild>
           <TouchableOpacity
             style={{
               backgroundColor: "#191970",
@@ -183,7 +182,7 @@ export default function Index() {
 
       {/* Last Transactions */}
       <View>
-        <Link href={"/(users)/transaction1"} asChild>
+        <Link href={"/transaction1"} asChild>
           <TouchableOpacity>
             <Text
               style={{

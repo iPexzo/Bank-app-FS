@@ -5,7 +5,7 @@ const getAllUsers = async () => {
   return data;
 };
 
-const updateUsers = async (userId: string, body: { image: string }) => {
+const updateUserImage = async (userId: string, body: { image: string }) => {
   const { data } = await instance.put(
     `/auth/profile/${userId}/updateusers`,
     body
@@ -24,6 +24,7 @@ const userId = async () => {
 };
 const my = async () => {
   const { data } = await instance.get("/transactions/my");
+  console.log(" from transaction:", data);
   return data;
 };
 
@@ -32,9 +33,9 @@ const deposit = async () => {
   return data;
 };
 
-const withdraw = async (body: { amount: number }) => {
-  const { data } = await instance.post("/transactions/withdraw", body);
+const withdraw = async () => {
+  const { data } = await instance.post("/transactions/withdraw");
   return data;
 };
 
-export { getAllUsers, me, my, updateUsers, deposit, withdraw, userId };
+export { getAllUsers, me, my, updateUserImage, deposit, withdraw, userId };

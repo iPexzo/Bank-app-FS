@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Link, useRouter } from "expo-router";
 import React, { useContext, useState } from "react";
 import {
+  FlatList,
   Image,
   ScrollView,
   StyleSheet,
@@ -107,7 +108,7 @@ const Allusers = () => {
               >
                 {data?.balance} KWD
               </Text>
-              <Link href={`/(users)/${data?._id}`} asChild>
+              <Link href={"/transaction1"} asChild>
                 <TouchableOpacity
                   style={{
                     backgroundColor: "white",
