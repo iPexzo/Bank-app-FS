@@ -60,7 +60,7 @@ import { userscard } from "@/data/usersdata";
 import AuthContext from "@/context/AuthContext";
 import { deleteToken } from "@/api/storage";
 import * as ImagePicker from "expo-image-picker";
-import UserId from "../(home)/transaction1";
+import UserId from "../(home)/LTransaction";
 const MyProfileScreen = () => {
   const router = useRouter();
   const { setIsAuthenticated } = useContext(AuthContext);

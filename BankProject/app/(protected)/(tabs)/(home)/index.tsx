@@ -6,7 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Link, useRouter } from "expo-router";
 import { useContext } from "react";
 import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
-import UserId from "./transaction1";
+import UserId from "./LTransaction";
 
 export default function Index() {
   const { setIsAuthenticated } = useContext(AuthContext);
@@ -97,7 +97,7 @@ export default function Index() {
           }}
         >
           <Text style={{ color: "white", fontSize: 18, marginBottom: 5 }}>
-            BankBoubyan
+            BlinkBoubyan
           </Text>
           <Text style={{ color: "white", fontSize: 26, fontWeight: "bold" }}>
             {data?.balance} KWD
@@ -125,7 +125,7 @@ export default function Index() {
           }}
         >
           <Text style={{ color: "white", fontSize: 18, marginBottom: 5 }}>
-            BankBoubyan
+            BlinkBoubyan
           </Text>
           <Text style={{ color: "white", fontSize: 26, fontWeight: "bold" }}>
             {data?.balance} KWD
@@ -166,7 +166,7 @@ export default function Index() {
             <Text style={{ color: "white", fontSize: 12 }}>Transfer</Text>
           </TouchableOpacity>
         </Link>
-        <Link href={"/(protected)/(tabs)/(home)/transactions1"} asChild>
+        <Link href={"/TransactionsBalance"} asChild>
           <TouchableOpacity
             style={{
               backgroundColor: "#374151",
@@ -186,7 +186,7 @@ export default function Index() {
 
       {/* Last Transactions */}
       <View>
-        <Link href={"/transaction1"} asChild>
+        <Link href={"/LTransaction"} asChild>
           <TouchableOpacity>
             <Text
               style={{
