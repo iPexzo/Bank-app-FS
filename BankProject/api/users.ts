@@ -1,5 +1,5 @@
 import instance from ".";
-
+import { Transactions } from "@/types/types";
 const getAllUsers = async () => {
   const { data } = await instance.get("/auth/users");
   return data;
@@ -28,14 +28,34 @@ const my = async () => {
   return data;
 };
 
-const deposit = async () => {
-  const { data } = await instance.post("/transactions/deposit");
+const deposit = async (Amount: number) => {
+  const { data } = await instance.put("/transactions/deposit", {
+    amount: Amount,
+  });
   return data;
 };
 
-const withdraw = async () => {
-  const { data } = await instance.post("/transactions/withdraw");
+const withdraw = async (Amount: number) => {
+  const { data } = await instance.put("/transactions/withdraw", {
+    amount: Amount,
+  });
+  return data;
+};
+const transferMoney = async (Amount: number, username: string) => {
+  const { data } = await instance.put(`/transactions/transfer/${username}`, {
+    amount: Amount,
+  });
+  console.log(" from transaction:", data);
   return data;
 };
 
-export { getAllUsers, me, my, updateUserImage, deposit, withdraw, userId };
+export {
+  getAllUsers,
+  me,
+  my,
+  updateUserImage,
+  deposit,
+  withdraw,
+  userId,
+  transferMoney,
+};

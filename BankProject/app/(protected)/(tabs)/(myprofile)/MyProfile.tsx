@@ -60,7 +60,7 @@ import { userscard } from "@/data/usersdata";
 import AuthContext from "@/context/AuthContext";
 import { deleteToken } from "@/api/storage";
 import * as ImagePicker from "expo-image-picker";
-import UserId from "../(users)/transaction1";
+import UserId from "../(home)/transaction1";
 const MyProfileScreen = () => {
   const router = useRouter();
   const { setIsAuthenticated } = useContext(AuthContext);
@@ -78,7 +78,7 @@ const MyProfileScreen = () => {
     <View
       style={{
         flex: 1,
-        backgroundColor: "#004d40",
+        backgroundColor: "#121212",
         paddingHorizontal: 20,
         paddingTop: 60,
       }}
@@ -92,12 +92,12 @@ const MyProfileScreen = () => {
           marginBottom: 20,
         }}
       >
-        Home
+        Personal info
       </Text>
 
       <View
         style={{
-          backgroundColor: "#002D62",
+          backgroundColor: "#1e3a8a",
           borderRadius: 15,
           padding: 20,
           alignItems: "center",
@@ -116,21 +116,19 @@ const MyProfileScreen = () => {
             borderWidth: 2,
           }}
         />
-        <Text style={{ color: "#fff", fontSize: 20, fontWeight: "bold" }}>
+        <Text style={{ color: "#ffffff", fontSize: 20, fontWeight: "bold" }}>
           {data?.username}
         </Text>
-        <Text style={{ color: "#ccc", fontSize: 14, marginBottom: 10 }}>
-          Email
-        </Text>
-        <Text style={{ color: "#00e676", fontSize: 18, fontWeight: "bold" }}>
-          {data?.balance}
+        {/* <Text style={{ color: "#ccc", fontSize: 14, marginBottom: 10 }}></Text> */}
+        <Text style={{ color: "#4ade80", fontSize: 18, fontWeight: "bold" }}>
+          {data?.balance} KWD
         </Text>
       </View>
 
       <View>
         <TouchableOpacity
           style={{
-            backgroundColor: "#1e88e5",
+            backgroundColor: "#374151",
             padding: 15,
             borderRadius: 10,
             marginBottom: 15,
@@ -142,23 +140,10 @@ const MyProfileScreen = () => {
             Edit Profile
           </Text>
         </TouchableOpacity>
+
         <TouchableOpacity
           style={{
-            backgroundColor: "#1e88e5",
-            padding: 15,
-            borderRadius: 10,
-            marginBottom: 15,
-          }}
-        >
-          <Text
-            style={{ color: "#fff", textAlign: "center", fontWeight: "bold" }}
-          >
-            Change Password
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{
-            backgroundColor: "#e53935",
+            backgroundColor: "#b91c1c",
             padding: 15,
             borderRadius: 10,
           }}
@@ -170,7 +155,11 @@ const MyProfileScreen = () => {
           }}
         >
           <Text
-            style={{ color: "#fff", textAlign: "center", fontWeight: "bold" }}
+            style={{
+              color: "#ffffff",
+              textAlign: "center",
+              fontWeight: "bold",
+            }}
           >
             Logout
           </Text>

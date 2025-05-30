@@ -13,17 +13,17 @@ export default function RootLayout() {
 
   const verifyToken = async () => {
     const token = await getToken();
-    console.log(">>Retrieved Token", token);
-    // console.log(token);
     if (token) {
       setIsAuthenticated(true);
     }
+    console.log(">>Retrieved Token", token);
+    // console.log(token);
     console.log("isAuth", isAuthenticated);
     setReady(true);
   };
 
   useEffect(() => {
-    deleteToken();
+    // deleteToken();
     verifyToken();
   }, []);
 

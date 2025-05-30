@@ -1,7 +1,6 @@
 import { getAllUsers, transferMoney } from "@/api/users";
 // import AuthContext from "@/context/AuthContext";
 import { userscard } from "@/data/usersdata";
-import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Link, useRouter } from "expo-router";
 import React, { useContext, useEffect, useState } from "react";
@@ -16,7 +15,7 @@ import {
   View,
 } from "react-native";
 
-const Allusers = () => {
+const allUserComp = () => {
   // const { setIsAuthenticated } = useContext(AuthContext);
   const [amount, setAmount] = useState("");
   const [username, setUsername] = useState("");
@@ -29,7 +28,7 @@ const Allusers = () => {
     queryKey: ["users"],
     queryFn: () => getAllUsers(),
   });
-  const { mutate } = useMutation({
+  const { mutate, isSuccess: isTransferred } = useMutation({
     mutationKey: ["LoginFn"],
     mutationFn: ({ amount, username }: { amount: number; username: string }) =>
       transferMoney(amount, username),
@@ -37,7 +36,6 @@ const Allusers = () => {
       alert("transfer Successfully");
       setAmount("");
       setUsername("");
-      refetchUser();
     },
     onError: (error) => {
       console.log("Login error", error);
@@ -70,14 +68,14 @@ const Allusers = () => {
   //   setIsAuthenticated(result);
   // };
 
-  // useEffect(() => {
-  //   if (isTransferred) {
-  //     refetchUser();
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (isTransferred) {
+      refetchUser();
+    }
+  }, []);
 
   return (
-    <View style={{ padding: 20, backgroundColor: "#ddd", flex: 1 }}>
+    <View style={{ padding: 20, backgroundColor: "#2f4f4f", flex: 1 }}>
       <View>
         <Text
           style={{
@@ -99,30 +97,40 @@ const Allusers = () => {
             onPress={() => setUsername(data.username)}
             style={{
               flexDirection: "row",
-              backgroundColor: "#0488",
+              backgroundColor: "#191970",
               padding: 15,
               marginBottom: 15,
               borderRadius: 15,
               alignItems: "center",
             }}
           >
-            <View
-              style={{
-                width: 55,
-                height: 55,
-                borderRadius: 30,
-                marginRight: 15,
-                borderWidth: 2,
-                padding: 15,
-              }}
-            >
-              <FontAwesome name="user" size={28} color="#8576" />
-            </View>
+            {data.image ? (
+              <Image
+                source={{ uri: data.image }}
+                style={{
+                  width: 55,
+                  height: 55,
+                  borderRadius: 30,
+                  marginRight: 15,
+                  borderWidth: 2,
+                }}
+              />
+            ) : (
+              <View
+                style={{
+                  width: 55,
+                  height: 55,
+                  borderRadius: 30,
+                  marginRight: 15,
+                  borderWidth: 2,
+                }}
+              ></View>
+            )}
 
             <View style={{ width: "70%" }}>
               <Text
                 style={{
-                  color: "yellow",
+                  color: "white",
                   fontSize: 16,
                   fontWeight: "bold",
                 }}
@@ -130,11 +138,11 @@ const Allusers = () => {
                 {data?.username}
               </Text>
               <Text
-                style={{ color: "yellow", fontSize: 13, marginTop: 2 }}
+                style={{ color: "#cdcdcd", fontSize: 13, marginTop: 2 }}
               ></Text>
               <Text
                 style={{
-                  color: "#046099",
+                  color: "#32cd32",
                   fontSize: 15,
                   fontWeight: "600",
                   marginTop: 5,
@@ -153,7 +161,7 @@ const Allusers = () => {
         value={amount}
         onChangeText={setAmount}
         style={{
-          backgroundColor: "#093762",
+          backgroundColor: "#1E1E1E",
           color: "white",
           borderRadius: 8,
           padding: 10,
@@ -180,4 +188,4 @@ const Allusers = () => {
     </View>
   );
 };
-export default Allusers;
+export default allUserComp;

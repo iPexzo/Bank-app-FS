@@ -6,6 +6,9 @@ const HOmePAge = () => {
   return (
     <Stack>
       <Stack.Screen name="index" options={{ headerShown: false }} />
+      <Stack.Screen name="transactions" />
+      <Stack.Screen name="withdrawD" />
+      <Stack.Screen name="transaction1" options={{ headerShown: false }} />
     </Stack>
   );
 };

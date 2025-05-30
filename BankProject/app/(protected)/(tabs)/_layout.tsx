@@ -3,9 +3,10 @@ import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { Tabs } from "expo-router";
 import React from "react";
 import { StyleSheet } from "react-native";
+import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 const TabsLayout = () => {
   return (
-    <Tabs>
+    <Tabs screenOptions={{ headerShown: false }}>
       <Tabs.Screen
         name="(home)"
         options={{
@@ -31,6 +32,16 @@ const TabsLayout = () => {
           headerShown: false,
           tabBarIcon: () => (
             <FontAwesome name="users" size={24} color="black" />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="(transactions)"
+        options={{
+          title: "Transactions",
+          headerShown: false,
+          tabBarIcon: () => (
+            <FontAwesome5 name="coins" size={24} color="black" />
           ),
         }}
       />

@@ -10,7 +10,13 @@ const ProtectedLayout = () => {
   }
   return (
     <Stack screenOptions={{ headerTitleAlign: "center" }}>
-      <Stack.Screen name="(tabs)" options={{ title: "Home" }} />
+      <Stack.Screen
+        name="(tabs)"
+        options={{
+          title: "Blink",
+          headerStyle: { backgroundColor: "#f2f6ff" },
+        }}
+      />
     </Stack>
   );
 };

@@ -1,7 +1,7 @@
 import { login } from "@/api/auth";
 import AuthContext from "@/context/AuthContext";
 import { useMutation } from "@tanstack/react-query";
-import { Link, useRouter } from "expo-router";
+import { Link, Redirect, useRouter } from "expo-router";
 import React, { useContext, useState } from "react";
 import {
   StyleSheet,
@@ -12,10 +12,13 @@ import {
 } from "react-native";
 
 const Login = () => {
+  const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
+  if (isAuthenticated) {
+    return <Redirect href="/" />;
+  }
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
 
-  const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
   const router = useRouter();
   const { mutate, isPending } = useMutation({
     mutationKey: ["LoginFn"],
@@ -36,7 +39,7 @@ const Login = () => {
   const handleLogin = () => {
     console.log("Login button pressed");
     if (!userName && !password) {
-      alert("Username and Passowrd are requried!");
+      alert("Compelete the boxes");
     } else {
       mutate();
     }
@@ -45,69 +48,82 @@ const Login = () => {
     <View
       style={{
         flex: 1,
+        backgroundColor: "#2f4f4f",
         alignItems: "center",
         justifyContent: "center",
+        padding: 20,
       }}
     >
-      <View
+      {/* Login */}
+      <Text
         style={{
-          alignItems: "flex-start",
-          width: "70%",
+          color: "white",
+          fontSize: 24,
+          fontWeight: "bold",
+          marginBottom: 30,
         }}
       >
-        <Text style={{ fontSize: 12, fontWeight: "bold" }}>
+        Login
+      </Text>
+      {/* 
+      username text */}
+      <View style={{ width: "100%", marginBottom: 15 }}>
+        <Text style={{ color: "white", fontSize: 14, marginBottom: 5 }}>
           Enter your Username
         </Text>
-      </View>
-      <TextInput
-        placeholder="Username"
-        onChangeText={(text) => setUserName(text)}
-        style={{
-          borderWidth: 1,
-          width: "70%",
-          padding: 5,
-          margin: 5,
-          borderRadius: 10,
-        }}
-      />
-      <View
-        style={{
-          alignItems: "flex-start",
-          width: "70%",
-        }}
-      >
-        <Text style={{ fontSize: 12, fontWeight: "bold" }}>
-          Enter your Password
-        </Text>
+        <TextInput
+          placeholder="Username"
+          onChangeText={(text) => setUserName(text)}
+          style={{
+            backgroundColor: "#1E1E1E",
+            color: "white",
+            padding: 12,
+            borderRadius: 8,
+            borderWidth: 1,
+          }}
+        />
       </View>
 
-      <TextInput
-        placeholder="password"
-        onChangeText={(text) => setPassword(text)}
-        style={{
-          borderWidth: 1,
-          width: "70%",
-          padding: 5,
-          margin: 5,
-          borderRadius: 10,
-        }}
-      />
-      <Link href={"/Register"} asChild>
-        <TouchableOpacity style={{ alignItems: "flex-start", width: "70%" }}>
-          <Text style={{ color: "blue" }}>Go to Register</Text>
+      {/* password text */}
+      <View style={{ width: "100%", marginBottom: 20 }}>
+        <Text style={{ color: "white", fontSize: 14, marginBottom: 5 }}>
+          Enter your Password
+        </Text>
+        <TextInput
+          placeholder="Password"
+          onChangeText={(text) => setPassword(text)}
+          style={{
+            backgroundColor: "#1E1E1E",
+            color: "white",
+            padding: 12,
+            borderRadius: 8,
+            borderWidth: 1,
+          }}
+        />
+      </View>
+
+      {/* go to Register button */}
+      <Link href="/Register" asChild>
+        <TouchableOpacity style={{ marginBottom: 25 }}>
+          <Text style={{ color: "#64B5F6" }}>Go to Register</Text>
         </TouchableOpacity>
       </Link>
 
+      {/* Log in press */}
       <TouchableOpacity
-        style={{
-          borderWidth: 1,
-          padding: 5,
-          borderRadius: 10,
-          marginTop: 20,
-        }}
         onPress={handleLogin}
+        style={{
+          backgroundColor: "#065A82",
+          padding: 15,
+          borderRadius: 8,
+          width: "100%",
+        }}
       >
-        <Text>LOG IN</Text>
+        <Text
+          style={{ color: "white", textAlign: "center", fontWeight: "bold" }}
+        >
+          LOG IN
+        </Text>
       </TouchableOpacity>
     </View>
   );

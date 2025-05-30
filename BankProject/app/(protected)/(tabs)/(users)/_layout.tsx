@@ -6,6 +6,7 @@ const UsersLayout = () => {
   return (
     <Stack>
       <Stack.Screen name="Allusers" options={{ headerShown: false }} />
+      <Stack.Screen name="transaction" options={{ headerShown: false }} />
     </Stack>
   );
 };

@@ -12,7 +12,7 @@ const register = async (userInfo: UserInfo, image: string) => {
     formData.append("password", userInfo.password);
 
     formData.append("image", {
-      name: "profile.jpeg",
+      name: image,
       uri: image,
       type: "image/jpeg",
     } as any);

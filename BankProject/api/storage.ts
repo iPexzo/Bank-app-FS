@@ -1,27 +1,25 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as SecureStore from "expo-secure-store";
-
+import { Platform } from "react-native";
 const storeToken = async (token: string) => {
-  try {
+  if (Platform.OS === "web") {
+    await AsyncStorage.setItem("token", token);
+  } else {
     await SecureStore.setItemAsync("token", token);
-  } catch (error) {
-    console.error("Error storing token", error);
   }
 };
 const getToken = async () => {
-  try {
-    const token = await SecureStore.getItemAsync("token");
-    return token;
-  } catch (error) {
-    console.error("Error getting token", error);
-    return null;
+  if (Platform.OS === "web") {
+    return await AsyncStorage.getItem("token");
+  } else {
+    return await SecureStore.getItemAsync("token");
   }
 };
 const deleteToken = async () => {
-  try {
+  if (Platform.OS === "web") {
+    await AsyncStorage.removeItem("token");
+  } else {
     await SecureStore.deleteItemAsync("token");
-  } catch (error) {
-    console.error("Error deleting token", error);
   }
 };
-
 export { deleteToken, getToken, storeToken };
