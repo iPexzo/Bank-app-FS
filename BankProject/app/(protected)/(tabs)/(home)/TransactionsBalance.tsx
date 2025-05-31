@@ -7,10 +7,9 @@ import { Transactions } from "@/types/types";
 import CardWnD from "@/components/TransactionsBalance";
 
 const TransactionsBalance = () => {
-  const [amount1, setAmount1] = useState("");
-  const [amount, setAmount] = useState("");
-
-  const { setIsAuthenticated } = useContext(AuthContext);
+  // const [amount1, setAmount1] = useState("");
+  // const [amount, setAmount] = useState("");
+  // const { setIsAuthenticated } = useContext(AuthContext);
 
   const { data: userData, refetch } = useQuery({
     queryKey: ["me"],
@@ -21,24 +20,23 @@ const TransactionsBalance = () => {
     mutationKey: ["withdrawww"],
     mutationFn: (data: Transactions) => withdraw(data.amount),
     onSuccess: () => {
-      alert("withdraw successfully");
+      alert("Withdraw successful");
       refetch();
-      setIsAuthenticated(true);
     },
     onError: () => {
-      alert("withdraw not done");
+      alert("Withdraw failed");
     },
   });
 
-  const { mutate: mutateDeposit, isPending } = useMutation({
+  const { mutate: mutateDeposit } = useMutation({
     mutationKey: ["Depositsss"],
     mutationFn: (data: Transactions) => deposit(data.amount),
     onSuccess: () => {
-      alert("deposit successfully");
-      refetch(); // تحديث الرصيد بعد الإيداع
+      alert("Deposit successful");
+      refetch();
     },
     onError: () => {
-      alert("Deposit not done");
+      alert("Deposit failed");
     },
   });
 
@@ -54,22 +52,20 @@ const TransactionsBalance = () => {
 
   return (
     <View style={styles.container}>
-      {/* كرت الرصيد */}
       <View style={styles.balanceCard}>
         <Text style={styles.cardTitle}>Your Balance</Text>
         <Text style={styles.balanceAmount}>{userData?.balance} KWD</Text>
       </View>
 
-      {/* كروت العمليات */}
       <CardWnD
-        title="Withdraw Amount"
+        title="Withdraw"
         onSubmit={handlerWithdraw}
-        buttonColor="#1e90ff"
+        buttonColor="#dc2626"
       />
       <CardWnD
-        title="Deposit Amount"
+        title="Deposit"
         onSubmit={handlerDeposit}
-        buttonColor="#28a745"
+        buttonColor="#16a34a"
       />
     </View>
   );
@@ -80,23 +76,22 @@ export default TransactionsBalance;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f2f2f2",
+    backgroundColor: "#111827",
     padding: 20,
-    justifyContent: "center",
   },
   balanceCard: {
-    backgroundColor: "#1e3a8a",
+    backgroundColor: "#1f2937",
     borderRadius: 16,
     padding: 20,
     marginBottom: 20,
   },
   cardTitle: {
-    color: "white",
-    fontSize: 18,
+    color: "#9ca3af",
+    fontSize: 16,
     marginBottom: 8,
   },
   balanceAmount: {
-    color: "white",
+    color: "#ffffff",
     fontSize: 28,
     fontWeight: "bold",
   },

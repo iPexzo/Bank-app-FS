@@ -13,30 +13,24 @@ import { my } from "@/api/users";
 import AuthContext from "@/context/AuthContext";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import TransactionCard from "@/components/LTransaction";
+
 const UserId = () => {
   const [selected, setSelected] = useState("All");
   const [searchAmount, setSearchAmount] = useState("");
-  const [fromdate, setfromdate] = useState<Date | null>(null);
+  const [fromdate, setFromDate] = useState<Date | null>(null);
   const [toDate, setToDate] = useState<Date | null>(null);
   const [showFrom, setShowFrom] = useState(false);
   const [showTo, setShowTo] = useState(false);
-  const { setIsAuthenticated } = useContext(AuthContext);
 
   const { data, isLoading } = useQuery({
     queryKey: ["mytransactions"],
     queryFn: () => my(),
   });
 
-  if (isLoading) {
-    return <Text>Loading...</Text>;
-  }
+  if (isLoading) return <Text>Loading...</Text>;
 
   const filteredData = data
-    ?.filter((t: any) =>
-      selected === "All"
-        ? true
-        : t.type?.toLowerCase() === selected.toLowerCase()
-    )
+    ?.filter((t: any) => (selected === "All" ? true : t.type === selected))
     .filter((t: any) =>
       searchAmount === "" ? true : String(t.amount).includes(searchAmount)
     )
@@ -48,45 +42,42 @@ const UserId = () => {
     });
 
   return (
-    <View style={{ flex: 1, padding: 20 }}>
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "space-evenly",
-          marginBottom: 20,
-          gap: 5,
-        }}
-      >
+    <View style={{ flex: 1, padding: 20, backgroundColor: "#f1f5f9" }}>
+      <Text style={styles.heading}>Latest Transactions</Text>
+
+      <View style={styles.filters}>
         {["All", "transfer", "withdraw", "deposit"].map((type) => (
           <TouchableOpacity
             key={type}
             onPress={() => setSelected(type)}
-            style={{
-              padding: 8,
-              borderRadius: 12,
-              width: 90,
-              alignItems: "center",
-              borderWidth: 1,
-            }}
+            style={[
+              styles.filterButton,
+              {
+                backgroundColor: selected === type ? "#003087" : "#e2e8f0",
+              },
+            ]}
           >
-            <Text>{type}</Text>
+            <Text
+              style={{
+                color: selected === type ? "#fff" : "#1e293b",
+
+                fontWeight: "bold",
+              }}
+            >
+              {type}
+            </Text>
           </TouchableOpacity>
         ))}
       </View>
 
       <TextInput
-        placeholder="Search for amount"
-        style={{
-          borderWidth: 1,
-          borderRadius: 12,
-          padding: 8,
-          marginBottom: 10,
-        }}
+        placeholder="Search by amount"
+        style={styles.input}
         onChangeText={(text) => setSearchAmount(text)}
       />
 
       <View style={{ marginBottom: 20 }}>
-        <Text style={{ fontWeight: "bold" }}>From Date:</Text>
+        <Text style={styles.label}>From Date:</Text>
         <Button
           title={fromdate ? fromdate.toDateString() : "Select From Date"}
           onPress={() => setShowFrom(true)}
@@ -98,12 +89,12 @@ const UserId = () => {
             display="default"
             onChange={(event, selectedDate) => {
               setShowFrom(false);
-              if (selectedDate) setfromdate(selectedDate);
+              if (selectedDate) setFromDate(selectedDate);
             }}
           />
         )}
 
-        <Text style={{ fontWeight: "bold", marginTop: 20 }}>To Date:</Text>
+        <Text style={[styles.label, { marginTop: 20 }]}>To Date:</Text>
         <Button
           title={toDate ? toDate.toDateString() : "Select To Date"}
           onPress={() => setShowTo(true)}
@@ -122,9 +113,14 @@ const UserId = () => {
       </View>
 
       <ScrollView showsVerticalScrollIndicator={false}>
-        {filteredData.map((t: any) => (
-          <TransactionCard key={t._id} transaction={t} />
-        ))}
+        {filteredData
+          .sort(
+            (a: any, b: any) =>
+              new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+          )
+          .map((t: any) => (
+            <TransactionCard key={t._id} transaction={t} />
+          ))}
       </ScrollView>
     </View>
   );
@@ -133,23 +129,33 @@ const UserId = () => {
 export default UserId;
 
 const styles = StyleSheet.create({
-  card: {
-    padding: 20,
-    borderRadius: 16,
-    marginBottom: 16,
-    backgroundColor: "#eef6ff",
-    shadowColor: "#000",
-    shadowOpacity: 0.05,
-    shadowOffset: { width: 0, height: 4 },
-    shadowRadius: 10,
-    elevation: 3,
-    alignItems: "center",
+  heading: {
+    fontSize: 22,
+    fontWeight: "bold",
+    color: "#0f172a",
+    marginBottom: 20,
   },
-  text: {
-    fontSize: 18,
-    color: "#333",
-    fontWeight: "600",
-    textAlign: "center",
-    lineHeight: 26,
+  filters: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    marginBottom: 20,
+  },
+  filterButton: {
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    borderRadius: 10,
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: "#cbd5e1",
+    borderRadius: 10,
+    padding: 10,
+    marginBottom: 20,
+    backgroundColor: "#ffffff",
+  },
+  label: {
+    fontWeight: "bold",
+    marginBottom: 5,
+    color: "#1e293b",
   },
 });

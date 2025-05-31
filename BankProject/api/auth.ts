@@ -10,7 +10,6 @@ const register = async (userInfo: UserInfo, image: string) => {
     const formData = new FormData();
     formData.append("username", userInfo.username);
     formData.append("password", userInfo.password);
-
     formData.append("image", {
       name: image,
       uri: image,

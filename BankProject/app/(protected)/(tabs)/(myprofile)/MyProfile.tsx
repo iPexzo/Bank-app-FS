@@ -1,171 +1,127 @@
-import { getAllUsers, updateUserImage } from "@/api/users";
-
-import { useLocalSearchParams, useRouter } from "expo-router";
-import React, { useContext, useState } from "react";
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-
-// const MyProfile = () => {
-//   const [allUsers, setAllUsers] = useState("");
-//   const { data, isFetching, isSuccess } = useQuery({
-//     queryKey: ["getallusers"],
-//     queryFn: () => getAllUsers(),
-//   });
-
-//   if (isFetching) return <Text>Loading...</Text>;
-//   return (
-//     <View>
-//       {/* {isSuccess &&
-//         data?.map((user: any) => <Text key={user.id}>{user?.username}</Text>)} */}
-//     </View>
-//   );
-// };
-// export default MyProfile;
-
-// const styles = StyleSheet.create({});
-// const MyProfile = () => {
-//   const { userid } = useLocalSearchParams();
-//   const user = .find((item) => item.id === Number(userid));
-//   return (
-//     <View
-//       style={{
-//         padding: 20,
-//         flex: 1,
-//         alignItems: "center",
-//         justifyContent: "center",
-//       }}
-//     >
-//       <Image
-//         source={{ uri: user?.image }}
-//         style={{
-//           width: 300,
-//           height: 300,
-//           borderRadius: 30,
-//           marginRight: 15,
-//           borderWidth: 2,
-//         }}
-//       />
-//       <Text>{user?.name}</Text>
-//       <Text>{user?.email}</Text>
-//       <Text>{user?.salary} KWD</Text>
-//     </View>
-//   );
-// };
-
-// export default MyProfile;
-
-// const styles = StyleSheet.create({});
-import { useQuery } from "@tanstack/react-query";
-import { me } from "@/api/users";
-import { userscard } from "@/data/usersdata";
-import AuthContext from "@/context/AuthContext";
 import { deleteToken } from "@/api/storage";
-import * as ImagePicker from "expo-image-picker";
-import UserId from "../(home)/LTransaction";
+import { me } from "@/api/users";
+import AuthContext from "@/context/AuthContext";
+import { useQuery } from "@tanstack/react-query";
+import { useRouter } from "expo-router";
+import React, { useContext } from "react";
+import { Image, Text, TouchableOpacity, View, ScrollView } from "react-native";
+
 const MyProfileScreen = () => {
   const router = useRouter();
   const { setIsAuthenticated } = useContext(AuthContext);
-  const { data, isLoading, error } = useQuery({
+
+  const { data, isLoading } = useQuery({
     queryKey: ["Meee"],
     queryFn: () => me(),
   });
 
-  console.log("profile", data);
-  if (isLoading) {
-    return <Text>Loading...</Text>;
-  }
+  if (isLoading) return <Text style={{ color: "white" }}>Loading...</Text>;
 
   return (
-    <View
+    <ScrollView
       style={{
         flex: 1,
         backgroundColor: "#121212",
-        paddingHorizontal: 20,
-        paddingTop: 60,
+        padding: 20,
       }}
     >
       <Text
         style={{
-          fontSize: 22,
+          fontSize: 24,
           fontWeight: "bold",
-          color: "#fff",
+          color: "#ffffff",
           alignSelf: "center",
-          marginBottom: 20,
+          marginBottom: 25,
         }}
       >
-        Personal info
+        My Profile
       </Text>
 
       <View
         style={{
-          backgroundColor: "#1e3a8a",
-          borderRadius: 15,
-          padding: 20,
+          backgroundColor: "#002B49",
+          padding: 25,
+          borderRadius: 20,
           alignItems: "center",
           marginBottom: 30,
+          borderWidth: 1,
+          borderColor: "#1E3A5F",
         }}
       >
         <Image
-          source={{
-            uri: data?.image,
-          }}
+          source={{ uri: data?.image }}
           style={{
-            width: 100,
-            height: 100,
-            borderRadius: 35,
-            marginBottom: 10,
+            width: 110,
+            height: 110,
+            borderRadius: 55,
+            marginBottom: 15,
             borderWidth: 2,
+            borderColor: "#00BFFF",
           }}
         />
-        <Text style={{ color: "#ffffff", fontSize: 20, fontWeight: "bold" }}>
+        <Text
+          style={{
+            fontSize: 20,
+            color: "#ffffff",
+            fontWeight: "600",
+            marginBottom: 8,
+          }}
+        >
           {data?.username}
         </Text>
-        {/* <Text style={{ color: "#ccc", fontSize: 14, marginBottom: 10 }}></Text> */}
-        <Text style={{ color: "#4ade80", fontSize: 18, fontWeight: "bold" }}>
+        <Text
+          style={{
+            fontSize: 18,
+            color: "#4ade80",
+            fontWeight: "bold",
+          }}
+        >
           {data?.balance} KWD
         </Text>
       </View>
 
-      <View>
-        <TouchableOpacity
+      <TouchableOpacity
+        style={{
+          backgroundColor: "#2c2c3c",
+          padding: 15,
+          borderRadius: 12,
+          marginBottom: 15,
+        }}
+      >
+        <Text
           style={{
-            backgroundColor: "#374151",
-            padding: 15,
-            borderRadius: 10,
-            marginBottom: 15,
+            color: "#ffffff",
+            fontWeight: "bold",
+            textAlign: "center",
           }}
         >
-          <Text
-            style={{ color: "#fff", textAlign: "center", fontWeight: "bold" }}
-          >
-            Edit Profile
-          </Text>
-        </TouchableOpacity>
+          Edit Profile
+        </Text>
+      </TouchableOpacity>
 
-        <TouchableOpacity
+      <TouchableOpacity
+        style={{
+          backgroundColor: "#b91c1c",
+          padding: 15,
+          borderRadius: 12,
+        }}
+        onPress={() => {
+          deleteToken();
+          setIsAuthenticated(false);
+          router.replace("/Login");
+        }}
+      >
+        <Text
           style={{
-            backgroundColor: "#b91c1c",
-            padding: 15,
-            borderRadius: 10,
-          }}
-          onPress={() => {
-            deleteToken();
-
-            setIsAuthenticated(false);
-            router.replace("/Login");
+            color: "#ffffff",
+            fontWeight: "bold",
+            textAlign: "center",
           }}
         >
-          <Text
-            style={{
-              color: "#ffffff",
-              textAlign: "center",
-              fontWeight: "bold",
-            }}
-          >
-            Logout
-          </Text>
-        </TouchableOpacity>
-      </View>
-    </View>
+          Logout
+        </Text>
+      </TouchableOpacity>
+    </ScrollView>
   );
 };
 

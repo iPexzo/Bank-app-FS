@@ -14,13 +14,13 @@ const AuthContext = createContext<AuthContextType>({
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  useEffect(() => {
-    const verifyToken = async () => {
-      const token = await getToken();
-      setIsAuthenticated(!!token);
-    };
-    verifyToken();
-  }, []);
+  // useEffect(() => {
+  //   const verifyToken = async () => {
+  //     const token = await getToken();
+  //     setIsAuthenticated(!!token);
+  //   };
+  //   verifyToken();
+  // }, []);
 
   return (
     <AuthContext.Provider value={{ isAuthenticated, setIsAuthenticated }}>

@@ -19,22 +19,21 @@ const CardWnD = ({ title, onSubmit, buttonColor }: Props) => {
   const handlePress = () => {
     const number = Number(value);
     if (!number) {
-      alert("please enter number");
+      alert("Please enter a number");
       return;
     }
     onSubmit(number);
-    setValue("");
   };
 
   return (
     <View style={styles.card}>
-      <Text style={styles.heading}>{title}</Text>
+      <Text style={styles.heading}>{title} </Text>
       <TextInput
         style={styles.input}
         value={value}
         onChangeText={setValue}
-        placeholder="amount"
-        keyboardType="numeric"
+        placeholder="Enter amount"
+        placeholderTextColor="#9ca3af"
       />
       <TouchableOpacity
         style={[styles.button, { backgroundColor: buttonColor }]}
@@ -50,25 +49,25 @@ export default CardWnD;
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: "#fff",
+    backgroundColor: "#1e293b",
     padding: 20,
     borderRadius: 12,
     marginBottom: 20,
-    shadowColor: "#000",
   },
   heading: {
     fontSize: 18,
     fontWeight: "bold",
     marginBottom: 10,
-    color: "#333",
+    color: "#ffffff",
   },
   input: {
     borderWidth: 1,
-    borderColor: "#ccc",
+    borderColor: "#374151",
     padding: 12,
     borderRadius: 8,
     marginBottom: 15,
-    backgroundColor: "#fafafa",
+    backgroundColor: "#0f172a",
+    color: "#f9fafb",
     fontSize: 16,
   },
   button: {
@@ -77,7 +76,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   buttonText: {
-    color: "#fff",
+    color: "#ffffff",
     fontWeight: "bold",
     fontSize: 16,
   },

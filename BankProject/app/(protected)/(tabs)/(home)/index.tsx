@@ -1,71 +1,64 @@
 import { deleteToken } from "@/api/storage";
-import { me, userId } from "@/api/users";
+import { me, my } from "@/api/users";
 import AuthContext from "@/context/AuthContext";
-import { userscard } from "@/data/usersdata";
 import { useQuery } from "@tanstack/react-query";
 import { Link, useRouter } from "expo-router";
 import { useContext } from "react";
 import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
-import UserId from "./LTransaction";
+import TransactionCard from "@/components/LTransaction";
 
 export default function Index() {
   const { setIsAuthenticated } = useContext(AuthContext);
   const router = useRouter();
 
-  const {
-    data,
-    isLoading,
-    error,
-    refetch: refetchUser,
-  } = useQuery({
+  const { data: userData, isLoading } = useQuery({
     queryKey: ["me"],
     queryFn: () => me(),
   });
 
-  if (isLoading) {
-    return <Text>Loading...</Text>;
-  }
+  const { data: transactionData } = useQuery({
+    queryKey: ["mytransactions"],
+    queryFn: () => my(),
+  });
 
-  console.log(data);
+  if (isLoading) return <Text>Loading...</Text>;
+
   return (
-    <ScrollView style={{ flex: 1, backgroundColor: "#121212", padding: 20 }}>
+    <ScrollView style={{ flex: 1, backgroundColor: "#F5F9FC", padding: 20 }}>
+      {/* Header */}
       <View
         style={{
-          flex: 1,
           flexDirection: "row",
           justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: 20,
         }}
       >
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            marginBottom: 20,
-          }}
-        >
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
           <Image
-            source={{
-              uri: data?.image,
-            }}
+            source={{ uri: userData?.image }}
             style={{
               width: 45,
               height: 45,
               borderRadius: 25,
               marginRight: 15,
               borderWidth: 2,
-              borderColor: "#33ccff",
+              borderColor: "#005DAA",
             }}
             resizeMode="cover"
           />
-
           <View>
-            <Text style={{ color: "white", fontSize: 14 }}>Welcome back,</Text>
-            <Text style={{ color: "white", fontSize: 18, fontWeight: "bold" }}>
-              {data?.username}
+            <Text style={{ color: "#001F3F", fontSize: 14 }}>
+              Welcome back,
+            </Text>
+            <Text
+              style={{ color: "#001F3F", fontSize: 18, fontWeight: "bold" }}
+            >
+              {userData?.username}
             </Text>
           </View>
         </View>
-        {/* Header */}
+
         <TouchableOpacity
           onPress={() => {
             deleteToken();
@@ -73,112 +66,78 @@ export default function Index() {
             router.replace("/Login");
           }}
           style={{
-            backgroundColor: "#bd5048",
+            backgroundColor: "#A00",
             padding: 10,
-            alignSelf: "flex-end",
-            marginBottom: 20,
             borderRadius: 10,
           }}
         >
-          <Text>LOGOUT</Text>
+          <Text style={{ color: "white" }}>LOGOUT</Text>
         </TouchableOpacity>
       </View>
 
-      {/* Cards */}
-      <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-        {/* Card 1 */}
+      {/* Card */}
+      <View
+        style={{
+          backgroundColor: "#002B49",
+          borderRadius: 20,
+          padding: 20,
+          marginBottom: 25,
+        }}
+      >
+        <Text style={{ color: "#FFFFFF", fontSize: 18, marginBottom: 5 }}>
+          Blink NBK
+        </Text>
+        <Text style={{ color: "#FFFFFF", fontSize: 26, fontWeight: "bold" }}>
+          {userData?.balance} KWD
+        </Text>
         <View
           style={{
-            backgroundColor: "#1e3a8a",
-            borderRadius: 20,
-            padding: 20,
-            width: 300,
-            marginRight: 15,
+            flexDirection: "row",
+            justifyContent: "space-between",
+            marginTop: 20,
           }}
         >
-          <Text style={{ color: "white", fontSize: 18, marginBottom: 5 }}>
-            BlinkBoubyan
-          </Text>
-          <Text style={{ color: "white", fontSize: 26, fontWeight: "bold" }}>
-            {data?.balance} KWD
-          </Text>
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              marginTop: 20,
-            }}
-          >
-            <Text style={{ color: "white" }}>**** 4570</Text>
-            <Text style={{ color: "white" }}>05/28</Text>
-          </View>
-          <Text style={{ color: "#dcdcdc", marginTop: 10 }}>VISA</Text>
+          <Text style={{ color: "#FFFFFF" }}>**** 4570</Text>
+          <Text style={{ color: "#FFFFFF" }}>05/28</Text>
         </View>
+        <Text style={{ color: "#FFFFFF", marginTop: 10 }}>VISA</Text>
+      </View>
 
-        {/* Card 2 */}
-        <View
-          style={{
-            backgroundColor: "#4b0082",
-            borderRadius: 20,
-            padding: 20,
-            width: 300,
-          }}
-        >
-          <Text style={{ color: "white", fontSize: 18, marginBottom: 5 }}>
-            BlinkBoubyan
-          </Text>
-          <Text style={{ color: "white", fontSize: 26, fontWeight: "bold" }}>
-            {data?.balance} KWD
-          </Text>
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              marginTop: 20,
-            }}
-          >
-            <Text style={{ color: "white" }}>**** 4570</Text>
-            <Text style={{ color: "white" }}>05/28</Text>
-          </View>
-          <Text style={{ color: "#dcdcdc", marginTop: 10 }}>VISA</Text>
-        </View>
-      </ScrollView>
-
-      {/* Actions الازرار */}
+      {/* Actions */}
       <View
         style={{
           flexDirection: "row",
           justifyContent: "space-between",
-          marginVertical: 30,
+          marginBottom: 25,
         }}
       >
         <Link href={"/Allusers"} asChild>
           <TouchableOpacity
             style={{
-              backgroundColor: "#1f2937",
+              backgroundColor: "#005DAA",
               padding: 15,
               borderRadius: 15,
-              alignItems: "center",
               flex: 1,
-              margin: 5,
+              alignItems: "center",
+              marginRight: 10,
             }}
           >
-            <Text style={{ color: "white", fontSize: 12 }}>Transfer</Text>
+            <Text style={{ color: "white", fontSize: 14 }}>Transfer</Text>
           </TouchableOpacity>
         </Link>
         <Link href={"/TransactionsBalance"} asChild>
           <TouchableOpacity
             style={{
-              backgroundColor: "#374151",
+              backgroundColor: "#1E3A5F",
               padding: 15,
               borderRadius: 15,
-              alignItems: "center",
               flex: 1,
-              margin: 5,
+              alignItems: "center",
+              marginLeft: 10,
             }}
           >
-            <Text style={{ color: "white", fontSize: 12 }}>
-              Withdraw /Deposit
+            <Text style={{ color: "white", fontSize: 14 }}>
+              Withdraw / Deposit
             </Text>
           </TouchableOpacity>
         </Link>
@@ -190,7 +149,7 @@ export default function Index() {
           <TouchableOpacity>
             <Text
               style={{
-                color: "white",
+                color: "#001F3F",
                 fontSize: 16,
                 fontWeight: "600",
                 marginBottom: 10,
@@ -200,19 +159,21 @@ export default function Index() {
             </Text>
           </TouchableOpacity>
         </Link>
-        <ScrollView
-          style={{
-            backgroundColor: "grey",
-            borderRadius: 15,
-            padding: 15,
-            height: 300,
-            borderWidth: 1,
-          }}
+
+        <View
+          style={{ backgroundColor: "#E2E8F0", borderRadius: 15, padding: 15 }}
         >
-          <View style={{ alignItems: "center" }}>
-            <UserId />
-          </View>
-        </ScrollView>
+          {transactionData
+            ?.sort(
+              (a: any, b: any) =>
+                new Date(b.updatedAt).getTime() -
+                new Date(a.updatedAt).getTime()
+            )
+            .slice(0, 3)
+            .map((A: any) => (
+              <TransactionCard key={A._id} transaction={A} />
+            ))}
+        </View>
       </View>
     </ScrollView>
   );
