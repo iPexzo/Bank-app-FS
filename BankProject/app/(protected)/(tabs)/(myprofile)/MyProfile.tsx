@@ -1,21 +1,80 @@
 import { deleteToken } from "@/api/storage";
-import { me } from "@/api/users";
+import { me, profile } from "@/api/users";
+import CustomLoader from "@/components/Loading";
 import AuthContext from "@/context/AuthContext";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useRouter } from "expo-router";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Image, Text, TouchableOpacity, View, ScrollView } from "react-native";
+import * as ImagePicker from "expo-image-picker";
 
 const MyProfileScreen = () => {
   const router = useRouter();
   const { setIsAuthenticated } = useContext(AuthContext);
+  const [image, setImage] = useState<string | null>(null);
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, refetch } = useQuery({
     queryKey: ["Meee"],
     queryFn: () => me(),
   });
 
-  if (isLoading) return <Text style={{ color: "white" }}>Loading...</Text>;
+  const { mutate } = useMutation({
+    mutationKey: ["Profile"],
+    mutationFn: (updatedInfo: any) => profile(updatedInfo),
+    onSuccess: () => {
+      alert("Edit Done");
+      refetch();
+    },
+    onError: () => {
+      alert("Edit Failed");
+    },
+  });
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ["images"],
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 0.4,
+    });
+
+    console.log(result);
+
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+    }
+  };
+
+  const handleProfile = () => {
+    mutate({
+      image,
+    });
+  };
+
+  if (isLoading) return <CustomLoader />;
+
+  const getImageUrl = (imagePath: string) => {
+    if (!imagePath) {
+      console.log("No available image.");
+    }
+
+    const baseUrl = "https://react-bank-project.eapi.joincoded.com";
+
+    if (imagePath?.startsWith("http://") || imagePath?.startsWith("https://")) {
+      console.log("Full URL: ", imagePath);
+      return imagePath;
+    }
+
+    let fullUrl;
+    if (imagePath.startsWith("/")) {
+      fullUrl = `${baseUrl}${imagePath}`;
+    } else {
+      fullUrl = `${baseUrl}/${imagePath}`;
+    }
+
+    return fullUrl;
+  };
+
+  const imageUrl = getImageUrl(data.image);
 
   return (
     <ScrollView
@@ -48,17 +107,25 @@ const MyProfileScreen = () => {
           borderColor: "#1E3A5F",
         }}
       >
-        <Image
-          source={{ uri: data?.image }}
-          style={{
-            width: 110,
-            height: 110,
-            borderRadius: 55,
-            marginBottom: 15,
-            borderWidth: 2,
-            borderColor: "#00BFFF",
-          }}
-        />
+        {imageUrl && (
+          <Image
+            source={
+              imageUrl
+                ? {
+                    uri: imageUrl,
+                  }
+                : require("@/assets/images/noAvatar.jpg")
+            }
+            style={{
+              width: 110,
+              height: 110,
+              borderRadius: 55,
+              marginBottom: 15,
+              borderWidth: 2,
+              borderColor: "#00BFFF",
+            }}
+          />
+        )}
         <Text
           style={{
             fontSize: 20,
@@ -79,6 +146,21 @@ const MyProfileScreen = () => {
           {data?.balance} KWD
         </Text>
       </View>
+      <TouchableOpacity
+        style={{
+          backgroundColor: "#2c2c3c",
+          padding: 15,
+          borderRadius: 12,
+          marginBottom: 15,
+        }}
+        onPress={pickImage}
+      >
+        <Text
+          style={{ color: "#fff", textAlign: "center", fontWeight: "bold" }}
+        >
+          Choose New Profile Image
+        </Text>
+      </TouchableOpacity>
 
       <TouchableOpacity
         style={{
@@ -87,6 +169,7 @@ const MyProfileScreen = () => {
           borderRadius: 12,
           marginBottom: 15,
         }}
+        onPress={handleProfile}
       >
         <Text
           style={{
@@ -95,7 +178,7 @@ const MyProfileScreen = () => {
             textAlign: "center",
           }}
         >
-          Edit Profile
+          Done
         </Text>
       </TouchableOpacity>
 

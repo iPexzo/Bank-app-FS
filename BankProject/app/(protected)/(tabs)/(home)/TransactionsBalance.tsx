@@ -5,6 +5,7 @@ import { deposit, me, withdraw } from "@/api/users";
 import AuthContext from "@/context/AuthContext";
 import { Transactions } from "@/types/types";
 import CardWnD from "@/components/TransactionsBalance";
+import CustomLoader from "@/components/Loading";
 
 const TransactionsBalance = () => {
   // const [amount1, setAmount1] = useState("");
@@ -48,7 +49,7 @@ const TransactionsBalance = () => {
     mutateDeposit({ amount: amount1 });
   };
 
-  if (!userData) return <Text>Loading...</Text>;
+  if (!userData) return <CustomLoader />;
 
   return (
     <View style={styles.container}>

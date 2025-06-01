@@ -6,6 +6,9 @@ const TransactionCard = ({ transaction }: { transaction: any }) => {
     <View style={styles.card}>
       <Text style={styles.amount}>{transaction.amount} KWD</Text>
       <Text style={styles.type}>{transaction.type}</Text>
+      <Text style={styles.date}>
+        {new Date(transaction.updatedAt).toLocaleDateString()}
+      </Text>
     </View>
   );
 };
@@ -22,10 +25,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffffff",
     alignItems: "center",
     shadowColor: "#000",
-    shadowOpacity: 0.05,
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 6,
-    elevation: 3,
   },
   amount: {
     fontSize: 20,
@@ -35,7 +34,7 @@ const styles = StyleSheet.create({
   type: {
     fontSize: 16,
     color: "#475569",
-    marginVertical: 4,
+    marginVertical: 0,
   },
   date: {
     fontSize: 12,

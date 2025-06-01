@@ -17,10 +17,10 @@ const Register = () => {
   const [image, setImage] = useState<string | null>(null);
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
-  const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
+  const { setIsAuthenticated } = useContext(AuthContext);
   const router = useRouter();
 
-  const { mutate, data } = useMutation({
+  const { mutate } = useMutation({
     mutationKey: ["RegisterFn"],
     mutationFn: () => register({ username: userName, password }, image || ""),
     onSuccess: () => {
@@ -35,102 +35,54 @@ const Register = () => {
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ["images"],
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [4, 3],
-      quality: 1,
+      quality: 0.4,
     });
-
-    console.log(result);
 
     if (!result.canceled) {
       setImage(result.assets[0].uri);
     }
   };
+
   const handleRegister = () => {
     mutate();
   };
-  return (
-    <View
-      style={{
-        flex: 1,
-        backgroundColor: "#2f4f4f",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: 20,
-      }}
-    >
-      {/* show the image stayle when he choose it */}
-      {image && (
-        <Image
-          source={{ uri: image }}
-          style={{
-            height: 150,
-            width: 150,
-            borderRadius: 80,
-            borderWidth: 2,
-            borderColor: "#fff",
-            marginBottom: 20,
-          }}
-        />
-      )}
 
-      {/* enter the image */}
-      <TouchableOpacity onPress={pickImage} style={{ marginBottom: 30 }}>
-        <Text style={{ color: "#64B5F6" }}>Pick an Image</Text>
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>Register</Text>
+
+      {image && <Image source={{ uri: image }} style={styles.image} />}
+
+      <TouchableOpacity onPress={pickImage}>
+        <Text style={styles.linkText}>Pick an Image</Text>
       </TouchableOpacity>
 
-      {/* enter the user */}
-      <View style={{ width: "100%", marginBottom: 15 }}>
-        <Text style={{ color: "white", fontSize: 14, marginBottom: 5 }}>
-          Enter your Username
-        </Text>
-        <TextInput
-          placeholder="username"
-          style={{
-            backgroundColor: "#1E1E1E",
-            color: "white",
-            borderRadius: 8,
-            padding: 12,
-            borderWidth: 1,
-          }}
-          onChangeText={(text) => setUserName(text)}
-        />
-      </View>
+      <TextInput
+        placeholder="Username"
+        placeholderTextColor="#aaa"
+        value={userName}
+        onChangeText={setUserName}
+        style={styles.input}
+      />
 
-      {/* enter the password */}
-      <View style={{ width: "100%", marginBottom: 20 }}>
-        <Text style={{ color: "white", fontSize: 14, marginBottom: 5 }}>
-          Enter your Password
-        </Text>
-        <TextInput
-          placeholder="password"
-          style={{
-            backgroundColor: "#1E1E1E",
-            color: "white",
-            borderRadius: 8,
-            padding: 12,
-            borderWidth: 1,
-          }}
-          onChangeText={(text) => setPassword(text)}
-        />
-      </View>
+      <TextInput
+        placeholder="Password"
+        placeholderTextColor="#aaa"
+        value={password}
+        onChangeText={setPassword}
+        secureTextEntry
+        style={styles.input}
+      />
 
-      {/* register press */}
-      <TouchableOpacity
-        onPress={handleRegister}
-        style={{
-          backgroundColor: "#065A82",
-          padding: 15,
-          borderRadius: 8,
-          width: "100%",
-        }}
-      >
-        <Text
-          style={{ color: "white", textAlign: "center", fontWeight: "bold" }}
-        >
-          Register
-        </Text>
+      <TouchableOpacity style={styles.button} onPress={handleRegister}>
+        <Text style={styles.buttonText}>Sign Up</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity onPress={() => router.push("/Login")}>
+        <Text style={styles.linkText}>Already have an account? Login</Text>
       </TouchableOpacity>
     </View>
   );
@@ -138,4 +90,52 @@ const Register = () => {
 
 export default Register;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#121212",
+    justifyContent: "center",
+    padding: 20,
+  },
+  title: {
+    fontSize: 32,
+    color: "#ffffff",
+    fontWeight: "bold",
+    marginBottom: 40,
+    textAlign: "center",
+  },
+  image: {
+    width: 110,
+    height: 110,
+    borderRadius: 55,
+    borderWidth: 2,
+    borderColor: "#00BFFF",
+    alignSelf: "center",
+    marginBottom: 15,
+  },
+  input: {
+    backgroundColor: "#1e1e1e",
+    color: "#fff",
+    padding: 15,
+    borderRadius: 10,
+    marginBottom: 10,
+    borderWidth: 1,
+    borderColor: "#333",
+  },
+  button: {
+    backgroundColor: "#00BFFF",
+    padding: 15,
+    borderRadius: 10,
+    marginTop: 20,
+  },
+  buttonText: {
+    color: "#fff",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  linkText: {
+    color: "#aaa",
+    textAlign: "center",
+    marginTop: 20,
+  },
+});

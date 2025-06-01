@@ -1,129 +1,96 @@
-import { login } from "@/api/auth";
-import AuthContext from "@/context/AuthContext";
-import { useMutation } from "@tanstack/react-query";
-import { Link, Redirect, useRouter } from "expo-router";
-import React, { useContext, useState } from "react";
 import {
-  StyleSheet,
+  View,
   Text,
   TextInput,
   TouchableOpacity,
-  View,
+  StyleSheet,
 } from "react-native";
+import React, { useContext, useState } from "react";
+import { useRouter } from "expo-router";
+import { useMutation } from "@tanstack/react-query";
+import { login } from "@/api/auth";
+import { z } from "zod";
+
+import AuthContext from "@/context/AuthContext";
+
+const loginSchema = z.object({
+  username: z.string().min(1, "Username is required"),
+  password: z.string().min(1, "Password is required"),
+});
 
 const Login = () => {
-  const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
-  if (isAuthenticated) {
-    return <Redirect href="/" />;
-  }
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
-
+  const [usernameError, setUsernameError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
   const router = useRouter();
-  const { mutate, isPending } = useMutation({
-    mutationKey: ["LoginFn"],
-    mutationFn: () => login({ username: userName, password }),
+
+  const { mutate } = useMutation({
+    mutationFn: login,
     onSuccess: (data) => {
-      console.log("i am here,  ", data);
-      alert("Logged in Successfully");
-      setIsAuthenticated(true);
-      router.replace("/");
+      if (data?.token) {
+        alert("Login Done");
+        setIsAuthenticated(true);
+        router.replace("/");
+      } else {
+        alert("Password or Username is wrong");
+      }
     },
-    onError: (error) => {
-      console.log("Login error", error);
-      alert(" No Accounts, Need to Register");
-      router.replace("/Register");
+    onError: () => {
+      alert("Something is wrong with the login");
     },
   });
 
-  const handleLogin = () => {
-    console.log("Login button pressed");
-    if (!userName && !password) {
-      alert("Compelete the boxes");
-    } else {
-      mutate();
+  const handleLogin = async () => {
+    setUsernameError("");
+    setPasswordError("");
+
+    const result = loginSchema.safeParse({ username: userName, password });
+
+    if (!result.success) {
+      const errors = result.error.format();
+      if (errors.username) setUsernameError(errors.username._errors[0]);
+      if (errors.password) setPasswordError(errors.password._errors[0]);
+      return;
     }
+
+    mutate({ username: userName.toLocaleLowerCase(), password });
   };
+
   return (
-    <View
-      style={{
-        flex: 1,
-        backgroundColor: "#2f4f4f",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: 20,
-      }}
-    >
-      {/* Login */}
-      <Text
-        style={{
-          color: "white",
-          fontSize: 24,
-          fontWeight: "bold",
-          marginBottom: 30,
-        }}
-      >
-        Login
-      </Text>
-      {/* 
-      username text */}
-      <View style={{ width: "100%", marginBottom: 15 }}>
-        <Text style={{ color: "white", fontSize: 14, marginBottom: 5 }}>
-          Enter your Username
-        </Text>
-        <TextInput
-          placeholder="Username"
-          onChangeText={(text) => setUserName(text)}
-          style={{
-            backgroundColor: "#1E1E1E",
-            color: "white",
-            padding: 12,
-            borderRadius: 8,
-            borderWidth: 1,
-          }}
-        />
-      </View>
+    <View style={styles.container}>
+      <Text style={styles.title}>Login</Text>
 
-      {/* password text */}
-      <View style={{ width: "100%", marginBottom: 20 }}>
-        <Text style={{ color: "white", fontSize: 14, marginBottom: 5 }}>
-          Enter your Password
-        </Text>
-        <TextInput
-          placeholder="Password"
-          onChangeText={(text) => setPassword(text)}
-          style={{
-            backgroundColor: "#1E1E1E",
-            color: "white",
-            padding: 12,
-            borderRadius: 8,
-            borderWidth: 1,
-          }}
-        />
-      </View>
+      <TextInput
+        placeholder="Username"
+        placeholderTextColor="#aaa"
+        value={userName}
+        onChangeText={setUserName}
+        style={styles.input}
+      />
+      {usernameError ? (
+        <Text style={styles.errorText}>{usernameError}</Text>
+      ) : null}
 
-      {/* go to Register button */}
-      <Link href="/Register" asChild>
-        <TouchableOpacity style={{ marginBottom: 25 }}>
-          <Text style={{ color: "#64B5F6" }}>Go to Register</Text>
-        </TouchableOpacity>
-      </Link>
+      <TextInput
+        placeholder="Password"
+        placeholderTextColor="#aaa"
+        value={password}
+        onChangeText={setPassword}
+        secureTextEntry
+        style={styles.input}
+      />
+      {passwordError ? (
+        <Text style={styles.errorText}>{passwordError}</Text>
+      ) : null}
 
-      {/* Log in press */}
-      <TouchableOpacity
-        onPress={handleLogin}
-        style={{
-          backgroundColor: "#065A82",
-          padding: 15,
-          borderRadius: 8,
-          width: "100%",
-        }}
-      >
-        <Text
-          style={{ color: "white", textAlign: "center", fontWeight: "bold" }}
-        >
-          LOG IN
-        </Text>
+      <TouchableOpacity style={styles.button} onPress={handleLogin}>
+        <Text style={styles.buttonText}>Sign In</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity onPress={() => router.push("/Register")}>
+        <Text style={styles.linkText}>Don't have an account? Register</Text>
       </TouchableOpacity>
     </View>
   );
@@ -131,4 +98,47 @@ const Login = () => {
 
 export default Login;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#121212",
+    justifyContent: "center",
+    padding: 20,
+  },
+  title: {
+    fontSize: 32,
+    color: "#ffffff",
+    fontWeight: "bold",
+    marginBottom: 40,
+    textAlign: "center",
+  },
+  input: {
+    backgroundColor: "#1e1e1e",
+    color: "#fff",
+    padding: 15,
+    borderRadius: 10,
+    marginBottom: 10,
+    borderWidth: 1,
+    borderColor: "#333",
+  },
+  button: {
+    backgroundColor: "#00BFFF",
+    padding: 15,
+    borderRadius: 10,
+    marginTop: 20,
+  },
+  buttonText: {
+    color: "#fff",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  linkText: {
+    color: "#aaa",
+    textAlign: "center",
+    marginTop: 20,
+  },
+  errorText: {
+    color: "red",
+    marginBottom: 10,
+  },
+});

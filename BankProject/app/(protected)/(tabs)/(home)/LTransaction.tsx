@@ -13,6 +13,7 @@ import { my } from "@/api/users";
 import AuthContext from "@/context/AuthContext";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import TransactionCard from "@/components/LTransaction";
+import CustomLoader from "@/components/Loading";
 
 const UserId = () => {
   const [selected, setSelected] = useState("All");
@@ -27,7 +28,7 @@ const UserId = () => {
     queryFn: () => my(),
   });
 
-  if (isLoading) return <Text>Loading...</Text>;
+  if (isLoading) return <CustomLoader />;
 
   const filteredData = data
     ?.filter((t: any) => (selected === "All" ? true : t.type === selected))
@@ -36,8 +37,13 @@ const UserId = () => {
     )
     .filter((t: any) => {
       const updatedAt = new Date(t.updatedAt);
-      if (fromdate && updatedAt < fromdate) return false;
-      if (toDate && updatedAt > toDate) return false;
+
+      const from = fromdate ? new Date(fromdate.setHours(0, 0, 0, 0)) : null;
+      const to = toDate ? new Date(toDate.setHours(23, 59, 59, 999)) : null;
+
+      if (from && updatedAt < from) return false;
+      if (to && updatedAt > to) return false;
+
       return true;
     });
 

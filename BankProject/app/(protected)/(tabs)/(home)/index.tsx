@@ -6,6 +6,7 @@ import { Link, useRouter } from "expo-router";
 import { useContext } from "react";
 import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import TransactionCard from "@/components/LTransaction";
+import CustomLoader from "@/components/Loading";
 
 export default function Index() {
   const { setIsAuthenticated } = useContext(AuthContext);
@@ -21,7 +22,28 @@ export default function Index() {
     queryFn: () => my(),
   });
 
-  if (isLoading) return <Text>Loading...</Text>;
+  if (isLoading) return <CustomLoader />;
+  const getImageUrl = (imagePath: string) => {
+    if (!imagePath) {
+    }
+
+    const baseUrl = "https://react-bank-project.eapi.joincoded.com";
+
+    if (imagePath?.startsWith("http://") || imagePath?.startsWith("https://")) {
+      return imagePath;
+    }
+
+    let fullUrl;
+    if (imagePath.startsWith("/")) {
+      fullUrl = `${baseUrl}${imagePath}`;
+    } else {
+      fullUrl = `${baseUrl}/${imagePath}`;
+    }
+
+    return fullUrl;
+  };
+
+  const imageUrl = getImageUrl(userData.image);
 
   return (
     <ScrollView style={{ flex: 1, backgroundColor: "#F5F9FC", padding: 20 }}>
@@ -36,7 +58,11 @@ export default function Index() {
       >
         <View style={{ flexDirection: "row", alignItems: "center" }}>
           <Image
-            source={{ uri: userData?.image }}
+            source={
+              imageUrl
+                ? { uri: imageUrl }
+                : require("@/assets/images/noAvatar.jpg")
+            }
             style={{
               width: 45,
               height: 45,
@@ -85,7 +111,7 @@ export default function Index() {
         }}
       >
         <Text style={{ color: "#FFFFFF", fontSize: 18, marginBottom: 5 }}>
-          Blink NBK
+          BlinkBank
         </Text>
         <Text style={{ color: "#FFFFFF", fontSize: 26, fontWeight: "bold" }}>
           {userData?.balance} KWD
@@ -153,6 +179,14 @@ export default function Index() {
                 fontSize: 16,
                 fontWeight: "600",
                 marginBottom: 10,
+                padding: 5,
+                borderWidth: 1,
+                borderColor: "#000",
+                borderRadius: 15,
+                width: "50%",
+                justifyContent: "center",
+                alignItems: "center",
+                textAlign: "center",
               }}
             >
               Last Transactions
