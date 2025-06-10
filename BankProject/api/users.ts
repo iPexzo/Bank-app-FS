@@ -8,13 +8,13 @@ const getAllUsers = async () => {
 };
 
 // update
-const updateUserImage = async (userId: string, body: { image: string }) => {
-  const { data } = await instance.put(
-    `/auth/profile/${userId}/updateusers`,
-    body
-  );
-  return data;
-};
+// const updateUserImage = async (userId: string, body: { image: string }) => {
+//   const { data } = await instance.put(
+//     `/auth/profile/${userId}/updateusers`,
+//     body
+//   );
+//   return data;
+// };
 
 //get your profile
 const me = async () => {
@@ -35,16 +35,16 @@ const my = async () => {
 };
 
 //
-const deposit = async (Amount: number) => {
+const deposit = async (amount: number) => {
   const { data } = await instance.put("/transactions/deposit", {
-    amount: Amount,
+    amount,
   });
   return data;
 };
 //
-const withdraw = async (Amount: number) => {
+const withdraw = async (amount: number) => {
   const { data } = await instance.put("/transactions/withdraw", {
-    amount: Amount,
+    amount,
   });
   return data;
 };
@@ -79,7 +79,7 @@ export {
   getAllUsers,
   me,
   my,
-  updateUserImage,
+  // updateUserImage,
   deposit,
   withdraw,
   userId,

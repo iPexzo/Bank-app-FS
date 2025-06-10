@@ -27,6 +27,7 @@ const UserId = () => {
     queryKey: ["mytransactions"],
     queryFn: () => my(),
   });
+  // console.log("dataaaa:", data);
 
   if (isLoading) return <CustomLoader />;
 

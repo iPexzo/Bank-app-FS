@@ -1,7 +1,11 @@
 import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 
-const TransactionCard = ({ transaction }: { transaction: any }) => {
+interface transactions {
+  transaction: any;
+}
+
+const TransactionCard = ({ transaction }: transactions) => {
   return (
     <View style={styles.card}>
       <Text style={styles.amount}>{transaction.amount} KWD</Text>

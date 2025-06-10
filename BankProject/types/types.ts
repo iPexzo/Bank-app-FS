@@ -6,3 +6,8 @@ export interface UserInfo {
 export interface Transactions {
   amount: number;
 }
+
+export interface transfer {
+  amount: number;
+  username: string;
+}

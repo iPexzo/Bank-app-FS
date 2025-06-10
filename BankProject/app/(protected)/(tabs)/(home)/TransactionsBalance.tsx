@@ -60,12 +60,12 @@ const TransactionsBalance = () => {
 
       <CardWnD
         title="Withdraw"
-        onSubmit={handlerWithdraw}
+        thehandler={handlerWithdraw}
         buttonColor="#dc2626"
       />
       <CardWnD
         title="Deposit"
-        onSubmit={handlerDeposit}
+        thehandler={handlerDeposit}
         buttonColor="#16a34a"
       />
     </View>

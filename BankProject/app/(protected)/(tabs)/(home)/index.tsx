@@ -16,13 +16,16 @@ export default function Index() {
     queryKey: ["me"],
     queryFn: () => me(),
   });
+  console.log("data:", userData);
 
   const { data: transactionData } = useQuery({
     queryKey: ["mytransactions"],
     queryFn: () => my(),
   });
 
-  if (isLoading) return <CustomLoader />;
+  if (isLoading) {
+    return <CustomLoader />;
+  }
   const getImageUrl = (imagePath: string) => {
     if (!imagePath) {
     }
@@ -71,7 +74,6 @@ export default function Index() {
               borderWidth: 2,
               borderColor: "#005DAA",
             }}
-            resizeMode="cover"
           />
           <View>
             <Text style={{ color: "#001F3F", fontSize: 14 }}>

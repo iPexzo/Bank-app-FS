@@ -1,4 +1,4 @@
-import AuthContext from "@/context/AuthContext";
+import AuthContext, { AuthProvider } from "@/context/AuthContext";
 import { Redirect, Stack } from "expo-router";
 import React, { useContext } from "react";
 import { StyleSheet } from "react-native";
@@ -9,15 +9,17 @@ const ProtectedLayout = () => {
     return <Redirect href="/Login" />;
   }
   return (
-    <Stack screenOptions={{ headerTitleAlign: "center" }}>
-      <Stack.Screen
-        name="(tabs)"
-        options={{
-          title: "Blink",
-          headerStyle: { backgroundColor: "#f2f6ff" },
-        }}
-      />
-    </Stack>
+    <AuthProvider>
+      <Stack screenOptions={{ headerTitleAlign: "center" }}>
+        <Stack.Screen
+          name="(tabs)"
+          options={{
+            title: "Blink",
+            headerStyle: { backgroundColor: "#f2f6ff" },
+          }}
+        />
+      </Stack>
+    </AuthProvider>
   );
 };
 

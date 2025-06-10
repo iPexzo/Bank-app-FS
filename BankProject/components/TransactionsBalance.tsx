@@ -9,20 +9,20 @@ import React, { useState } from "react";
 
 interface Props {
   title: string;
-  onSubmit: (amount: number) => void;
+  thehandler: (amount: number) => void;
   buttonColor: string;
 }
 
-const CardWnD = ({ title, onSubmit, buttonColor }: Props) => {
-  const [value, setValue] = useState("");
+const CardWnD = ({ title, thehandler, buttonColor }: Props) => {
+  const [ivalue, setValue] = useState("");
 
   const handlePress = () => {
-    const number = Number(value);
+    const number = Number(ivalue);
     if (!number) {
       alert("Please enter a number");
       return;
     }
-    onSubmit(number);
+    thehandler(number);
   };
 
   return (
@@ -30,7 +30,7 @@ const CardWnD = ({ title, onSubmit, buttonColor }: Props) => {
       <Text style={styles.heading}>{title} </Text>
       <TextInput
         style={styles.input}
-        value={value}
+        value={ivalue}
         onChangeText={setValue}
         placeholder="Enter amount"
         placeholderTextColor="#9ca3af"

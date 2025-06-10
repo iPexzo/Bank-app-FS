@@ -13,6 +13,7 @@ import {
 } from "react-native";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import CustomLoader from "@/components/Loading";
+import { transfer } from "@/types/types";
 
 const Allusers = () => {
   const [amount, setAmount] = useState("");
@@ -26,11 +27,13 @@ const Allusers = () => {
     queryKey: ["users"],
     queryFn: () => getAllUsers(),
   });
+  // console.log("dtttt", data);
 
   const { mutate } = useMutation({
     mutationKey: ["TransferMoney"],
-    mutationFn: ({ amount, username }: { amount: number; username: string }) =>
-      transferMoney(amount, username),
+    // mutationFn: ({ amount, username }: { amount: number; username: string }) =>
+    //   transferMoney(amount, username),
+    mutationFn: (data: transfer) => transferMoney(data.amount, data.username),
     onSuccess: () => {
       alert(" Transfer Successful");
       setAmount("");
