@@ -30,7 +30,7 @@ const userId = async () => {
 // get your transaction
 const my = async () => {
   const { data } = await instance.get("/transactions/my");
-  console.log(" from transaction:", data);
+  // console.log(" from transaction:", data);
   return data;
 };
 
@@ -53,7 +53,7 @@ const transferMoney = async (Amount: number, username: string) => {
   const { data } = await instance.put(`/transactions/transfer/${username}`, {
     amount: Number(Amount),
   });
-  console.log(" from transaction:", data);
+  // console.log(" from transaction:", data);
   return data;
 };
 

@@ -35,16 +35,7 @@ const TabsLayout = () => {
           ),
         }}
       />
-      <Tabs.Screen
-        name="(transactions)"
-        options={{
-          title: "Transactions",
-          headerShown: false,
-          tabBarIcon: () => (
-            <FontAwesome5 name="coins" size={24} color="black" />
-          ),
-        }}
-      />
+      <Tabs.Screen name="index" />
     </Tabs>
   );
 };

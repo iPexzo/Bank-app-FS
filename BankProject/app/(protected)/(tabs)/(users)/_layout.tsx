@@ -5,8 +5,7 @@ import { StyleSheet } from "react-native";
 const UsersLayout = () => {
   return (
     <Stack>
-      <Stack.Screen name="Allusers" options={{ headerShown: false }} />
-      <Stack.Screen name="transaction" options={{ headerShown: false }} />
+      <Stack.Screen name="index" options={{ headerShown: false }} />
     </Stack>
   );
 };

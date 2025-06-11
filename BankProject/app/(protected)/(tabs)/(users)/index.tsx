@@ -41,7 +41,7 @@ const Allusers = () => {
       refetchUser();
     },
     onError: () => {
-      alert(" Transfer Failed");
+      alert("Transfer Failed");
     },
   });
 

@@ -1,47 +1,52 @@
 import { deleteToken, getToken } from "@/api/storage";
+import CustomLoader from "@/components/Loading";
 import AuthContext, { AuthProvider } from "@/context/AuthContext";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Stack } from "expo-router";
-import { useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { Text, View } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-
+const queryClient = new QueryClient();
 export default function RootLayout() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
   const [ready, setReady] = useState(false);
-  const queryClient = new QueryClient();
 
   const verifyToken = async () => {
     const token = await getToken();
     if (token) {
+      console.log(">>Retrieved Tokennnnnnn", token);
       setIsAuthenticated(true);
     }
-    console.log(">>Retrieved Token", token);
+
     // console.log(token);
-    console.log("isAuth", isAuthenticated);
+
     setReady(true);
   };
 
   useEffect(() => {
-    // deleteToken();
     verifyToken();
+    // deleteToken();
   }, []);
 
   if (!ready) {
     return (
-      <View>
+      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
         <Text>LOADING APP</Text>
       </View>
     );
   }
+
   return (
-    <AuthContext.Provider value={{ isAuthenticated, setIsAuthenticated }}>
+    <AuthProvider>
       <QueryClientProvider client={queryClient}>
         <Stack screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="(auth)" />
-          <Stack.Screen name="(tabs)" />
+          {isAuthenticated ? (
+            <Stack.Screen name="(auth)" />
+          ) : (
+            <Stack.Screen name="(protected)" />
+          )}
         </Stack>
       </QueryClientProvider>
-    </AuthContext.Provider>
+    </AuthProvider>
   );
 }

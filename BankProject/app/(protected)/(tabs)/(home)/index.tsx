@@ -16,7 +16,7 @@ export default function Index() {
     queryKey: ["me"],
     queryFn: () => me(),
   });
-  console.log("data:", userData);
+  // console.log("data:", userData);
 
   const { data: transactionData } = useQuery({
     queryKey: ["mytransactions"],
@@ -139,7 +139,7 @@ export default function Index() {
           marginBottom: 25,
         }}
       >
-        <Link href={"/Allusers"} asChild>
+        <Link href={"/(protected)/(tabs)/(users)"} asChild>
           <TouchableOpacity
             style={{
               backgroundColor: "#005DAA",

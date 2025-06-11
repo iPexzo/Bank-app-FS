@@ -5,7 +5,7 @@ import { StyleSheet } from "react-native";
 const MYProfileLayout = () => {
   return (
     <Stack>
-      <Stack.Screen name="MyProfile" options={{ headerShown: false }} />
+      <Stack.Screen name="index" options={{ headerShown: false }} />
     </Stack>
   );
 };

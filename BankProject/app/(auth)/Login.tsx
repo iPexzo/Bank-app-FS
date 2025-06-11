@@ -10,6 +10,7 @@ import { useRouter } from "expo-router";
 import { useMutation } from "@tanstack/react-query";
 import { login } from "@/api/auth";
 import { z } from "zod";
+import { storeToken } from "@/api/storage";
 
 import AuthContext from "@/context/AuthContext";
 
@@ -28,10 +29,12 @@ const Login = () => {
 
   const { mutate } = useMutation({
     mutationFn: login,
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
       if (data?.token) {
-        alert("Login Done");
+        await storeToken(data.token);
         setIsAuthenticated(true);
+        console.log("aaaaaaaa", data.token);
+        alert("Login Done");
         router.replace("/");
       } else {
         alert("Password or Username is wrong");

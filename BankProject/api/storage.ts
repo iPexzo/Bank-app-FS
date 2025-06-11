@@ -10,9 +10,11 @@ const storeToken = async (token: string) => {
 };
 const getToken = async () => {
   if (Platform.OS === "web") {
-    return await AsyncStorage.getItem("token");
+    const token = await AsyncStorage.getItem("token");
+    return token;
   } else {
-    return await SecureStore.getItemAsync("token");
+    const token = await SecureStore.getItemAsync("token");
+    return token;
   }
 };
 const deleteToken = async () => {
