@@ -5,7 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Stack } from "expo-router";
 import { useCallback, useContext, useEffect, useState } from "react";
 import { Text, View } from "react-native";
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+
 const queryClient = new QueryClient();
 export default function RootLayout() {
   const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);

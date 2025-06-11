@@ -11,6 +11,7 @@ const ProtectedLayout = () => {
     console.log("not authenticated");
     return <Redirect href="/Login" />;
   }
+
   return (
     <Stack screenOptions={{ headerTitleAlign: "center" }}>
       <Stack.Screen

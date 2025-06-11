@@ -1,39 +1,38 @@
 import { getToken } from "@/api/storage";
-import { Children, createContext, useEffect, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 
 export interface AuthContextType {
   isAuthenticated: boolean;
   setIsAuthenticated: (isAuthenticated: boolean) => void;
-  ready: boolean;
 }
 
 const AuthContext = createContext<AuthContextType>({
   isAuthenticated: false,
   setIsAuthenticated: () => {},
-  ready: false,
 });
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [ready, setReady] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const verifyToken = async () => {
       const token = await getToken();
-      console.log("KKKKKKKKKKK", token);
       if (token) {
         setIsAuthenticated(true);
       }
-      setReady(true);
+      setLoading(false);
     };
 
     verifyToken();
   }, []);
 
+  if (loading) {
+    return null;
+  }
+
   return (
-    <AuthContext.Provider
-      value={{ isAuthenticated, setIsAuthenticated, ready }}
-    >
+    <AuthContext.Provider value={{ isAuthenticated, setIsAuthenticated }}>
       {children}
     </AuthContext.Provider>
   );
